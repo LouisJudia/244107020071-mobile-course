@@ -30,7 +30,9 @@ Fitur yang ditambahkan:
 
 ### Tampilan Aplikasi
 
-![Profil Mahasiswa](screenshots/profile_app.png)
+![Profil Mahasiswa](../screenshoot/profile_app.png)
+
+Screenshot ini menunjukkan tampilan aplikasi profil mahasiswa beserta informasi identitas yang ditampilkan.
 
 ---
 
@@ -47,7 +49,9 @@ Materi yang dipelajari antara lain:
 
 ### Hasil Program
 
-![Output Latihan Dart](screenshots/latihanmandiri.png)
+![Output Latihan Dart](../screenshoot/latiihanmandiri.png)
+
+Screenshot ini menunjukkan hasil eksekusi latihan Dart tentang fungsi, class, constructor, dan null safety.
 
 ---
 
@@ -62,11 +66,15 @@ Untuk memastikan Flutter telah terpasang dengan benar, dilakukan beberapa pengec
 
 **Flutter Doctor**
 
-![Flutter Doctor](screenshots/flutter_doctor.png)
+![Flutter Doctor](../screenshoot/flutter_doctor.png)
+
+Screenshot ini menunjukkan hasil pemeriksaan konfigurasi Flutter menggunakan perintah `flutter doctor`.
 
 **Flutter Devices**
 
-![Flutter Devices](screenshots/flutter_devices.png)
+![Flutter Devices](../screenshoot/flutter_devices.png)
+
+Screenshot ini menunjukkan perangkat saya atau emulator yang berhasil terdeteksi oleh Flutter.
 
 ---
 
