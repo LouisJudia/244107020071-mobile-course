@@ -593,37 +593,213 @@ Penggunaan AI Coding Assistant membantu mempercepat proses pembuatan struktur da
 
 Praktikum AI Challenge berhasil menunjukkan bahwa AI dapat dimanfaatkan untuk membantu menghasilkan kode Flutter dengan lebih cepat. Setelah dilakukan proses verifikasi, perbaikan, dan pengujian, aplikasi berhasil menangani seluruh kondisi asynchronous dengan baik, yaitu **Loading**, **Error**, dan **Success**, serta menyediakan mekanisme **Retry** untuk meningkatkan pengalaman pengguna.
 
-# Praktikum 5 - Refactoring dan Testing
+# Praktikum 5 - Refactoring Challenge dan Testing
 
 ## Langkah Praktikum
 
-### 1. Melakukan Refactoring Kode
+### 1. Memisahkan Widget Todo menjadi `TodoTile`
 
-Pada tahap ini dilakukan refactoring untuk meningkatkan keterbacaan dan struktur kode aplikasi. Widget dipisahkan sesuai fungsinya, logika state tetap dikelola oleh Riverpod, serta halaman statistik ditambahkan ke dalam aplikasi.
+Pada tahap ini dilakukan refactoring dengan memisahkan widget item ToDo ke dalam file `TodoTile` agar method `build()` pada `TodoPage` menjadi lebih ringkas dan mudah dipelajari.
 
-![Refactoring](./screenshoot/refactoring.png)
-
-**Penjelasan**
-
-Refactoring dilakukan tanpa mengubah fungsionalitas aplikasi. Struktur kode menjadi lebih rapi karena logika bisnis berada pada provider, sedangkan tampilan hanya bertugas menampilkan data. Dengan demikian kode menjadi lebih mudah dipelihara dan dikembangkan.
-
----
-
-### 2. Integrasi Halaman Statistik
-
-Halaman **StatsPage** berhasil diintegrasikan ke dalam aplikasi sehingga dapat diakses melalui navigasi yang telah dibuat.
-
-![Stats Navigation](./screenshoot/stats-navigation.png)
+![Struktur refactoring TodoTile](./screenshoot/refactoring.png)
 
 **Penjelasan**
 
-Halaman statistik berhasil ditambahkan ke dalam aplikasi. Halaman ini menggunakan `ConsumerWidget` dan `statsProvider` untuk menampilkan data secara asynchronous menggunakan tiga kondisi yaitu **Loading**, **Error**, dan **Success**.
+Widget `TodoTile` dibuat sebagai widget terpisah yang bertugas menampilkan satu item tugas. Dengan pemisahan ini, halaman `TodoPage` hanya bertanggung jawab mengatur tampilan daftar, sedangkan setiap item ditangani oleh `TodoTile`. Pendekatan ini membuat kode lebih modular dan mudah diuji.
 
 ---
 
-### 3. Menjalankan Flutter Analyze
+### 2. Membuat Provider Turunan untuk Filter
 
-Kode diperiksa menggunakan perintah berikut.
+Logika filter dipindahkan ke provider turunan (`filteredTodosProvider`) yang membaca data dari `todoListProvider`.
+
+![Filter Provider](./screenshoot/filter-provider.png)
+
+**Penjelasan**
+
+Provider `filteredTodosProvider` merupakan provider turunan yang membaca data dari `todoListProvider` dan `todoFilterProvider`. Provider ini bertugas memfilter daftar tugas sesuai filter yang dipilih pengguna. Jika filter bernilai `TodoFilter.all`, seluruh tugas akan ditampilkan. Sebaliknya, jika filter `TodoFilter.incomplete`, hanya tugas yang belum selesai yang akan ditampilkan. Dengan memindahkan logika filter ke provider, kode pada `TodoPage` menjadi lebih ringkas, mudah dipelihara, dan mengikuti prinsip pemisahan antara logika bisnis dan antarmuka pengguna.
+---
+
+### 3. Integrasi GoRouter
+
+Aplikasi ToDo diintegrasikan menggunakan **GoRouter** dengan konfigurasi route sebagai berikut:
+
+- `/` → Halaman daftar ToDo
+- `/stats` → Halaman Statistik
+
+![GoRouter](./screenshoot/go-router.png)
+
+**Penjelasan**
+
+GoRouter digunakan sebagai sistem navigasi aplikasi. Route utama (`/`) menampilkan halaman daftar tugas, sedangkan route `/stats` digunakan untuk menampilkan halaman statistik. Dengan GoRouter, navigasi menjadi lebih terstruktur dan mendukung pengembangan aplikasi yang lebih kompleks.
+
+---
+
+### 4. Menambahkan NavigationBar
+
+NavigationBar ditambahkan agar pengguna dapat berpindah antara halaman ToDo dan Statistik.
+
+![NavigationBar](./screenshoot/navigation-bar.png)
+
+**Penjelasan**
+
+NavigationBar menyediakan dua menu utama, yaitu **ToDo** dan **Statistik**. Ketika salah satu menu dipilih, aplikasi akan berpindah ke halaman yang sesuai menggunakan GoRouter tanpa kehilangan state yang dikelola oleh Riverpod.
+
+---
+
+# Testing
+
+### 5. Widget Test
+
+Pengujian dilakukan untuk memastikan aplikasi dapat menambahkan tugas baru.
+
+```dart
+testWidgets('menambah tugas baru', (tester) async {
+  await tester.pumpWidget(const ProviderScope(child: MyApp()));
+
+  expect(find.text('Belum ada tugas'), findsOneWidget);
+
+  await tester.tap(find.byIcon(Icons.add));
+  await tester.pumpAndSettle();
+
+  await tester.enterText(
+    find.byType(TextField),
+    'Kerjakan PR minggu 3',
+  );
+
+  await tester.tap(find.text('Tambah'));
+  await tester.pump();
+
+  expect(find.text('Kerjakan PR minggu 3'), findsOneWidget);
+});
+```
+
+![Widget Test](./screenshoot/widget-test.png)
+
+**Penjelasan**
+
+Widget test memastikan bahwa antarmuka aplikasi bereaksi dengan benar terhadap perubahan state. Setelah tombol tambah ditekan dan pengguna memasukkan tugas baru, daftar tugas berhasil diperbarui sesuai dengan data yang dimasukkan.
+
+---
+
+### 6. Menjalankan Flutter Analyze
+
+```bash
+flutter analyze
+```
+
+![Flutter Analyze](./screenshoot/flutter-analyze2.png)
+
+**Penjelasan**
+
+Perintah `flutter analyze` digunakan untuk memeriksa kualitas source code. Hasil analisis menunjukkan bahwa kode dapat dianalisis tanpa ditemukan error yang menghambat proses kompilasi.
+
+---
+
+### 7. Menjalankan Flutter Test
+
+```bash
+flutter test
+```
+
+![Flutter Test](./screenshoot/flutter-test2.png)
+
+**Penjelasan**
+
+Perintah `flutter test` digunakan untuk menjalankan seluruh unit test dan widget test pada aplikasi. Pengujian memastikan bahwa fitur yang telah dibuat tetap berjalan dengan baik setelah proses refactoring.
+
+---
+
+## Checklist Verifikasi Mandiri
+
+| No | Verifikasi | Status |
+|----|------------|:------:|
+| 1 | GoRouter dapat berpindah halaman | ✅ |
+| 2 | ProviderScope membungkus root aplikasi | ✅ |
+| 3 | State ToDo tetap ada saat berpindah halaman | ✅ |
+| 4 | AsyncValue menangani Loading, Error, dan Success | ✅ |
+| 5 | `flutter analyze` berhasil dijalankan | ✅ |
+| 6 | `flutter test` berhasil dijalankan | ✅ |
+| 7 | Hasil AI telah diverifikasi dan didokumentasikan | ✅ |
+
+---
+
+## Hasil Praktikum
+
+Refactoring berhasil membuat struktur aplikasi menjadi lebih modular dengan memisahkan widget `TodoTile`, memindahkan logika filter ke provider turunan, serta mengintegrasikan navigasi menggunakan GoRouter. Widget test, `flutter analyze`, dan `flutter test` digunakan untuk memastikan bahwa seluruh fungsi aplikasi tetap berjalan dengan baik setelah proses refactoring.
+
+---
+
+## Analisis Hasil
+
+Pemisahan widget dan provider meningkatkan keterbacaan kode serta memudahkan proses pemeliharaan aplikasi. Integrasi GoRouter membuat navigasi lebih terstruktur, sedangkan Riverpod memastikan state aplikasi tetap terjaga ketika berpindah halaman. Pengujian menggunakan widget test membantu memverifikasi bahwa perubahan state benar-benar tercermin pada antarmuka pengguna.
+
+---
+
+## Kesimpulan
+
+Praktikum Refactoring Challenge berhasil meningkatkan kualitas aplikasi Flutter melalui pemisahan widget, penggunaan provider turunan, serta integrasi GoRouter. Pengujian menggunakan `flutter analyze` dan `flutter test` menunjukkan bahwa aplikasi tetap berjalan dengan baik setelah proses refactoring dilakukan.
+
+# Praktikum 6 - Tugas, Refleksi, dan Referensi
+
+## Mini Project / Industry Challenge
+
+Pada tahap ini dikembangkan aplikasi **ToDo** menggunakan Flutter dengan menggabungkan **GoRouter** sebagai sistem navigasi dan **Riverpod** sebagai state management. Aplikasi dibuat sebagai implementasi dari seluruh materi yang telah dipelajari pada praktikum minggu ketiga.
+
+### Fitur yang Diimplementasikan
+
+- ✅ Navigasi menggunakan **GoRouter**
+  - Halaman Daftar Tugas (`/`)
+  - Halaman Statistik (`/stats`)
+- ✅ State Management menggunakan **Riverpod (Notifier)**
+- ✅ UI menggunakan **ConsumerWidget**
+- ✅ Simulasi asynchronous menggunakan **AsyncValue**
+  - Loading
+  - Error
+  - Success
+- ✅ Widget Test
+- ✅ AI Challenge
+- ✅ Dokumentasi lengkap pada README.md
+
+---
+
+### 1. Halaman Daftar Tugas
+
+Halaman utama menampilkan seluruh daftar tugas yang dimiliki pengguna.
+
+![Todo Page](./screenshoot/todo-page.png)
+
+**Penjelasan**
+
+Halaman ini menggunakan `ConsumerWidget` untuk membaca data dari `todoListProvider`. Pengguna dapat menambahkan tugas baru, mengubah status tugas menjadi selesai, serta memfilter daftar tugas sesuai kebutuhan.
+
+---
+
+### 2. Halaman Statistik
+
+Halaman statistik menampilkan data yang diperoleh melalui provider asynchronous.
+
+![Stats Page](./screenshoot/stats-page1.png)
+
+**Penjelasan**
+
+Halaman statistik menggunakan `AsyncNotifier` dan `AsyncValue` sehingga aplikasi mampu menangani tiga kondisi berbeda yaitu loading, error, dan success.
+
+---
+
+### 3. Widget Test
+
+Widget test dilakukan untuk memastikan perubahan state berhasil ditampilkan pada antarmuka aplikasi.
+
+![Widget Test](./screenshoot/widget-test.png)
+
+**Penjelasan**
+
+Pengujian dilakukan dengan menambahkan tugas baru melalui widget test. Setelah tombol **Tambah** ditekan, aplikasi berhasil memperbarui daftar tugas sesuai data yang dimasukkan.
+
+---
+
+### 4. Flutter Analyze
 
 ```bash
 flutter analyze
@@ -633,13 +809,11 @@ flutter analyze
 
 **Penjelasan**
 
-Perintah `flutter analyze` digunakan untuk memeriksa kualitas kode. Hasil analisis menunjukkan bahwa seluruh source code berhasil dianalisis tanpa ditemukan error maupun warning sehingga kode telah memenuhi standar Flutter.
+Perintah `flutter analyze` digunakan untuk memastikan tidak terdapat error maupun warning yang dapat mengganggu proses pengembangan aplikasi.
 
 ---
 
-### 4. Menjalankan Flutter Test
-
-Pengujian aplikasi dilakukan menggunakan perintah berikut.
+### 5. Flutter Test
 
 ```bash
 flutter test
@@ -649,104 +823,49 @@ flutter test
 
 **Penjelasan**
 
-Pengujian dilakukan untuk memastikan implementasi provider dan halaman statistik berjalan sesuai harapan. Seluruh test berhasil dijalankan sehingga aplikasi dinyatakan bekerja dengan baik.
-
----
-
-## Checklist Verifikasi
-
-| No | Pengujian | Hasil |
-|----|-----------|:----:|
-| 1 | Navigasi GoRouter berjalan dengan baik | ✅ |
-| 2 | Riverpod mengelola state aplikasi | ✅ |
-| 3 | AsyncValue menangani Loading, Error, Success | ✅ |
-| 4 | Flutter Analyze tanpa error/warning | ✅ |
-| 5 | Flutter Test berhasil dijalankan | ✅ |
+Seluruh unit test dan widget test berhasil dijalankan tanpa kegagalan sehingga aplikasi dinyatakan berjalan sesuai dengan yang diharapkan.
 
 ---
 
 ## Hasil Praktikum
 
-Refactoring berhasil meningkatkan struktur aplikasi tanpa mengubah fungsionalitas. Seluruh logika state berhasil dipisahkan dari tampilan menggunakan Riverpod sehingga kode menjadi lebih bersih dan mudah dipelihara. Selain itu, seluruh pengujian menggunakan `flutter analyze` dan `flutter test` berhasil dijalankan dengan baik.
+Mini project berhasil mengintegrasikan GoRouter dan Riverpod dalam satu aplikasi ToDo. Navigasi antarhalaman berjalan dengan baik, state aplikasi tetap terjaga saat berpindah halaman, dan halaman statistik berhasil menangani kondisi loading, error, serta success menggunakan `AsyncValue`. Selain itu, aplikasi berhasil melewati proses analisis kode dan pengujian menggunakan Flutter Test.
 
 ---
 
-## Analisis Hasil
+# Refleksi
 
-Refactoring merupakan langkah penting dalam pengembangan aplikasi karena membantu meningkatkan kualitas kode tanpa mengubah perilaku program. Dengan memisahkan logika bisnis ke dalam provider dan menggunakan `ConsumerWidget` pada tampilan, struktur aplikasi menjadi lebih modular. Penggunaan `flutter analyze` membantu menemukan kesalahan sejak awal, sedangkan `flutter test` memastikan perubahan yang dilakukan tidak merusak fungsi aplikasi.
+### 1. Kapan `setState()` masih cukup, dan kapan state harus naik ke Riverpod?
 
----
-
-## Kesimpulan
-
-Praktikum Refactoring dan Testing berhasil meningkatkan kualitas aplikasi Flutter yang telah dibuat. Struktur kode menjadi lebih rapi, mudah dipahami, dan mudah dikembangkan. Selain itu, proses analisis serta pengujian menunjukkan bahwa aplikasi berjalan dengan baik dan memenuhi praktik pengembangan Flutter yang direkomendasikan.
+`setState()` masih sesuai digunakan untuk mengelola perubahan state yang sederhana dan hanya digunakan pada satu widget, misalnya perubahan warna tombol atau nilai counter. Namun, ketika state perlu digunakan oleh banyak halaman atau widget, seperti daftar tugas pada aplikasi ToDo, penggunaan Riverpod lebih tepat karena state dapat diakses secara terpusat, lebih mudah dipelihara, dan tidak bergantung pada hierarki widget.
 
 ---
 
-## Implementasi Refactoring dan Testing
+### 2. Apa perbedaan `context.go()` dan `context.push()`?
 
-### 1. Pemisahan Widget `TodoTile`
+- `context.go()` digunakan untuk berpindah ke halaman baru dengan **mengganti route saat ini**, sehingga halaman sebelumnya tidak berada pada stack navigasi.
+- `context.push()` digunakan untuk **menambahkan halaman baru ke dalam stack navigasi**, sehingga pengguna masih dapat kembali ke halaman sebelumnya menggunakan tombol Back.
 
-Widget untuk satu baris tugas dipindahkan ke file `week3_todo/lib/widgets/todo_tile.dart`. Widget ini menerima objek `Todo`, menampilkan `CheckboxListTile`, dan memanggil `todoListProvider.notifier.toggle()` saat checkbox ditekan. Dengan pemisahan ini, method `build()` pada `TodoPage` hanya bertanggung jawab pada daftar tugas, keadaan kosong, dan tombol tambah.
+Pada aplikasi ini, `context.go()` digunakan untuk perpindahan antar menu utama, sedangkan `context.push()` lebih sesuai digunakan untuk membuka halaman detail.
 
-### 2. Provider Turunan untuk Filter Tugas
+---
 
-Provider utama `todoListProvider` menyimpan seluruh daftar tugas. Filter tugas yang belum selesai diekstrak ke `incompleteTodosProvider`.
+### 3. Bagaimana `AsyncValue` mencegah bug dibanding tiga boolean terpisah?
 
-```dart
-final incompleteTodosProvider = Provider<List<Todo>>((ref) {
-  final todos = ref.watch(todoListProvider);
-  return todos.where((todo) => !todo.isCompleted).toList(growable: false);
-});
-```
+`AsyncValue` menggabungkan tiga kondisi (`loading`, `error`, dan `data`) dalam satu objek sehingga hanya satu state yang aktif pada satu waktu. Pendekatan ini menghindari inkonsistensi yang sering terjadi ketika menggunakan beberapa variabel boolean, misalnya `isLoading`, `hasError`, dan `hasData`, yang berpotensi memiliki nilai bertentangan.
 
-`TodoPage` cukup melakukan `ref.watch(incompleteTodosProvider)`, sehingga logika filter tidak bercampur dengan kode UI. Ketika sebuah tugas ditandai selesai, state pada provider utama berubah dan daftar pada halaman otomatis diperbarui.
+---
 
-### 3. Integrasi GoRouter dan NavigationBar
+### 4. Bagian mana dari hasil AI yang diperbaiki, dan mengapa?
 
-Aplikasi menggunakan `MaterialApp.router` dan `GoRouter` dengan dua rute utama:
+Kode hasil AI tidak langsung digunakan. Beberapa bagian diperbaiki agar sesuai dengan standar Riverpod terbaru, antara lain:
 
-| Path | Halaman | Fungsi |
-|---|---|---|
-| `/` | `TodoPage` | Menampilkan serta menambah tugas. |
-| `/stats` | `StatsPage` | Menampilkan statistik asynchronous. |
+- Menggunakan `Notifier` dan `AsyncNotifier` sebagai pengganti pendekatan lama.
+- Memisahkan logika bisnis ke dalam folder `providers`.
+- Menambahkan provider turunan (`filteredTodosProvider`) agar logika filter tidak berada di dalam widget.
+- Mengintegrasikan GoRouter menggunakan `ShellRoute`.
+- Menambahkan widget test dan dokumentasi agar aplikasi memenuhi seluruh kebutuhan praktikum.
 
-Kedua rute berada dalam `ShellRoute`. `HomePage` berfungsi sebagai shell yang menyediakan `NavigationBar`, sehingga pengguna dapat berpindah antara daftar ToDo dan statistik tanpa membuat ulang `ProviderScope`. Akibatnya state daftar tugas tetap bertahan saat halaman berpindah.
+Perubahan tersebut dilakukan agar struktur aplikasi lebih modular, mudah dipelihara, dan mengikuti praktik terbaik dalam pengembangan Flutter modern.
 
-### 4. Pengujian Widget dan Notifier
-
-Widget test pada `week3_todo/test/todo_page_test.dart` memeriksa alur penambahan tugas dari UI:
-
-1. Aplikasi dimulai dengan teks `Belum ada tugas`.
-2. Pengguna menekan tombol tambah, memasukkan `Kerjakan PR minggu 3`, lalu memilih tombol `Tambah`.
-3. Test memastikan judul tugas baru muncul pada layar.
-
-Unit test pada `week3_todo/test/stats_notifier_test.dart` memeriksa dua hasil `StatsNotifier`: data sukses berisi tiga statistik dan request gagal menghasilkan exception. Random palsu dipakai agar kedua kondisi dapat diuji secara deterministik tanpa menunggu simulasi jaringan.
-
-### 5. Hasil Verifikasi
-
-Perintah berikut dijalankan dari folder `week3_todo`:
-
-```bash
-flutter analyze
-flutter test
-```
-
-Hasil verifikasi:
-
-| Pemeriksaan | Hasil |
-|---|:---:|
-| `flutter analyze` | Tidak ditemukan issue |
-| `flutter test` | 3 test lulus |
-| State statistik | Loading, error, dan success ditangani oleh `AsyncValue.when()` |
-| Navigasi | Rute `/` dan `/stats` dapat diakses melalui GoRouter |
-
-#### Bukti Screenshot
-
-Berikut adalah bukti hasil implementasi dan verifikasi yang disimpan pada folder `screenshoot/`.
-
-| Bukti | Screenshot |
-|---|---|
-| Struktur hasil refactoring: halaman, provider, dan entry point aplikasi dipisahkan. | ![Struktur refactoring](./screenshoot/refactoring.png) |
-| `flutter analyze` selesai tanpa issue. | ![Hasil flutter analyze](./screenshoot/flutter-analyze.png) |
-| `flutter test` selesai dengan seluruh test lulus. | ![Hasil flutter test](./screenshoot/flutter-test.png) |
+---

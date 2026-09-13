@@ -19,6 +19,9 @@ class Todo {
       Todo(id: id, title: title, isCompleted: isCompleted ?? this.isCompleted);
 }
 
+/// Pilihan tampilan daftar tugas pada halaman ToDo.
+enum TodoFilter { all, incomplete }
+
 /// Menyimpan dan mengubah daftar tugas utama aplikasi.
 class TodoListNotifier extends Notifier<List<Todo>> {
   /// Daftar baru selalu dimulai dari keadaan kosong.
@@ -53,8 +56,30 @@ final todoListProvider = NotifierProvider<TodoListNotifier, List<Todo>>(
   TodoListNotifier.new,
 );
 
-/// Provider turunan yang hanya menyajikan tugas yang belum selesai.
-final incompleteTodosProvider = Provider<List<Todo>>((ref) {
+/// Menyimpan filter aktif yang dipilih pengguna pada halaman ToDo.
+class TodoFilterNotifier extends Notifier<TodoFilter> {
+  /// Filter awal menampilkan seluruh tugas.
+  @override
+  TodoFilter build() => TodoFilter.all;
+
+  /// Mengganti filter daftar tugas.
+  void select(TodoFilter filter) => state = filter;
+}
+
+/// Provider untuk pilihan filter aktif.
+final todoFilterProvider = NotifierProvider<TodoFilterNotifier, TodoFilter>(
+  TodoFilterNotifier.new,
+);
+
+/// Provider turunan yang memfilter [todoListProvider] sesuai pilihan pengguna.
+final filteredTodosProvider = Provider<List<Todo>>((ref) {
   final todos = ref.watch(todoListProvider);
-  return todos.where((todo) => !todo.isCompleted).toList(growable: false);
+  final filter = ref.watch(todoFilterProvider);
+
+  return switch (filter) {
+    TodoFilter.all => todos,
+    TodoFilter.incomplete => todos
+        .where((todo) => !todo.isCompleted)
+        .toList(growable: false),
+  };
 });

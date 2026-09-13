@@ -12,17 +12,39 @@ class TodoPage extends ConsumerWidget {
   /// Menampilkan daftar tugas atau keadaan kosong.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final incompleteTodos = ref.watch(incompleteTodosProvider);
+    final todos = ref.watch(filteredTodosProvider);
+    final activeFilter = ref.watch(todoFilterProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('ToDo')),
-      body: incompleteTodos.isEmpty
-          ? const Center(child: Text('Belum ada tugas'))
-          : ListView.builder(
-              itemCount: incompleteTodos.length,
-              itemBuilder: (context, index) =>
-                  TodoTile(todo: incompleteTodos[index]),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: SegmentedButton<TodoFilter>(
+              segments: const [
+                ButtonSegment(value: TodoFilter.all, label: Text('Semua')),
+                ButtonSegment(
+                  value: TodoFilter.incomplete,
+                  label: Text('Belum selesai'),
+                ),
+              ],
+              selected: {activeFilter},
+              onSelectionChanged: (filters) => ref
+                  .read(todoFilterProvider.notifier)
+                  .select(filters.first),
             ),
+          ),
+          Expanded(
+            child: todos.isEmpty
+                ? const Center(child: Text('Belum ada tugas'))
+                : ListView.builder(
+                    itemCount: todos.length,
+                    itemBuilder: (context, index) => TodoTile(todo: todos[index]),
+                  ),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddTodoDialog(context, ref),
         child: const Icon(Icons.add),
