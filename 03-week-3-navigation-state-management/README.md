@@ -740,3 +740,13 @@ Hasil verifikasi:
 | `flutter test` | 3 test lulus |
 | State statistik | Loading, error, dan success ditangani oleh `AsyncValue.when()` |
 | Navigasi | Rute `/` dan `/stats` dapat diakses melalui GoRouter |
+
+#### Bukti Screenshot
+
+Berikut adalah bukti hasil implementasi dan verifikasi yang disimpan pada folder `screenshoot/`.
+
+| Bukti | Screenshot |
+|---|---|
+| Struktur hasil refactoring: halaman, provider, dan entry point aplikasi dipisahkan. | ![Struktur refactoring](./screenshoot/refactoring.png) |
+| `flutter analyze` selesai tanpa issue. | ![Hasil flutter analyze](./screenshoot/flutter-analyze.png) |
+| `flutter test` selesai dengan seluruh test lulus. | ![Hasil flutter test](./screenshoot/flutter-test.png) |
