@@ -1,8 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'dart:async';
+
 import 'api_client.dart';
+import 'models/comment.dart';
 import 'models/post.dart';
+import 'repositories/comment_repository.dart';
 import 'repositories/post_repository.dart';
 
 final dioProvider = Provider<Dio>((ref) => createDio());
@@ -10,6 +14,44 @@ final dioProvider = Provider<Dio>((ref) => createDio());
 final postRepositoryProvider = Provider<PostRepository>(
   (ref) => PostRepository(ref.watch(dioProvider)),
 );
+
+// Provider repository komentar memakai Dio yang sama dengan fitur post.
+final commentRepositoryProvider = Provider<CommentRepository>(
+  (ref) => CommentRepository(ref.watch(dioProvider)),
+);
+
+// Notifier family membuat state terpisah untuk setiap nilai postId.
+class CommentNotifier extends AsyncNotifier<List<Comment>> {
+  CommentNotifier(this.postId);
+
+  final int postId;
+
+  @override
+  Future<List<Comment>> build() async {
+    // Error dari repository sengaja tidak ditangkap agar Riverpod membuat AsyncError.
+    final repository = ref.watch(commentRepositoryProvider);
+    return repository.fetchComments(postId);
+  }
+
+  // Memuat ulang komentar dan mengubah exception menjadi AsyncError secara eksplisit.
+  Future<void> refresh() async {
+    state = const AsyncLoading();
+    try {
+      final repository = ref.read(commentRepositoryProvider);
+      state = AsyncData(await repository.fetchComments(postId));
+    } catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
+    }
+  }
+}
+
+// Provider publik untuk membaca komentar berdasarkan postId.
+final commentProvider =
+    AsyncNotifierProvider.family<CommentNotifier, List<Comment>, int>(
+      CommentNotifier.new,
+      // Mematikan retry otomatis agar error langsung tersedia bagi UI dan test.
+      retry: (retryCount, error) => null,
+    );
 
 class PostListNotifier extends AsyncNotifier<List<Post>> {
   @override
@@ -31,46 +73,44 @@ class PostListNotifier extends AsyncNotifier<List<Post>> {
   }
 }
 
-final postListProvider =
-    AsyncNotifierProvider<PostListNotifier, List<Post>>(
-        PostListNotifier.new,
-        // Nonaktifkan retry otomatis Riverpod 3 agar error langsung
-        // final dan mudah diuji (tanpa ini, future provider di-test
-        // akan me-retry dan menggantung).
-        retry: (retryCount, error) => null);
+final postListProvider = AsyncNotifierProvider<PostListNotifier, List<Post>>(
+  PostListNotifier.new,
+  // Nonaktifkan retry otomatis Riverpod 3 agar error langsung
+  // final dan mudah diuji (tanpa ini, future provider di-test
+  // akan me-retry dan menggantung).
+  retry: (retryCount, error) => null,
+);
 
 /// Helper khusus testing (letakkan di providers.dart): membaca state
 /// pertama yang bukan loading lewat listener + completer, sehingga
 /// test tidak menunggu retry dan tidak melakukan HTTP sungguhan.
 Future<List<Post>> readPostsOnce(ProviderContainer container) {
   final completer = Completer<List<Post>>();
-  final sub = container.listen<AsyncValue<List<Post>>>(
-    postListProvider,
-    (previous, next) {
-      if (next.isLoading || completer.isCompleted) return;
-      next.whenData(completer.complete);
-      if (next.hasError) {
-        completer.completeError(
-          next.error ?? StateError('unknown error'),
-          next.stackTrace ?? StackTrace.empty,
-        );
-      }
-    },
-    fireImmediately: true,
-  );
+  final sub = container.listen<AsyncValue<List<Post>>>(postListProvider, (
+    previous,
+    next,
+  ) {
+    if (next.isLoading || completer.isCompleted) return;
+    next.whenData(completer.complete);
+    if (next.hasError) {
+      completer.completeError(
+        next.error ?? StateError('unknown error'),
+        next.stackTrace ?? StackTrace.empty,
+      );
+    }
+  }, fireImmediately: true);
   return completer.future.whenComplete(sub.close);
 }
 
 Future<Object?> readPostsErrorOnce(ProviderContainer container) {
   final completer = Completer<Object?>();
-  final sub = container.listen<AsyncValue<List<Post>>>(
-    postListProvider,
-    (previous, next) {
-      if (next.isLoading || completer.isCompleted) return;
-      completer.complete(next.error);
-    },
-    fireImmediately: true,
-  );
+  final sub = container.listen<AsyncValue<List<Post>>>(postListProvider, (
+    previous,
+    next,
+  ) {
+    if (next.isLoading || completer.isCompleted) return;
+    completer.complete(next.error);
+  }, fireImmediately: true);
   return completer.future.whenComplete(sub.close);
 }
 
@@ -86,6 +126,9 @@ String friendlyErrorMessage(Object error) {
       case DioExceptionType.badResponse:
         final code = error.response?.statusCode;
         if (code == 404) return 'Data tidak ditemukan (404).';
+        if (code == 500) {
+          return 'Server sedang bermasalah (500). Coba lagi nanti.';
+        }
         if (code == 401 || code == 403) {
           return 'Akses ditolak ($code). Periksa kredensial Anda.';
         }
