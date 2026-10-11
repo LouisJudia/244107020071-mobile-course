@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dio/dio.dart';
+import '../data/api_errors.dart';
 import '../messaging/push_service.dart';
 import '../providers/auth_provider.dart';
+import '../routes.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -109,7 +111,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       });
     } catch (e) {
       setState(() {
-        _apiStatus = 'Error API / Interceptor: $e';
+        _apiStatus = 'Error: ${getFriendlyErrorMessage(e)}';
       });
     } finally {
       await _loadTokens();
@@ -118,6 +120,22 @@ class _HomePageState extends ConsumerState<HomePage> {
           _isLoadingApi = false;
         });
       }
+    }
+  }
+
+  Future<void> _testSimulatedNotification() async {
+    await triggerSimulatedNotification(
+      title: 'Jadwal Kuliah Berubah',
+      body: 'Kelas Mobile pindah ke Ruang A2 jam 13.00 WIB (Ketuk untuk detail).',
+      route: AppRoutes.announcementDetail('101'),
+    );
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Notifikasi berhasil dipicu! Cek system tray atau ketuk untuk deep link.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
     }
   }
 
@@ -166,11 +184,13 @@ class _HomePageState extends ConsumerState<HomePage> {
                         children: [
                           const Icon(Icons.security, color: Colors.blue),
                           const SizedBox(width: 8),
-                          Text(
-                            'Status Sesi & Debug FCM',
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                          Expanded(
+                            child: Text(
+                              'Status Sesi & Debug FCM',
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
                           ),
                         ],
                       ),
@@ -210,7 +230,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                         ),
                       ],
                       const SizedBox(height: 12),
-                      Row(
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
                         children: [
                           ElevatedButton.icon(
                             onPressed: _isLoadingApi ? null : _testApiRefresh,
@@ -222,6 +244,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                                   )
                                 : const Icon(Icons.refresh, size: 18),
                             label: const Text('Uji Refresh Token (Dio)'),
+                          ),
+                          OutlinedButton.icon(
+                            onPressed: _testSimulatedNotification,
+                            icon: const Icon(Icons.notifications_active, size: 18),
+                            label: const Text('Uji Notifikasi FCM'),
                           ),
                         ],
                       ),
@@ -291,7 +318,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: () {
-                        context.push('/pengumuman/${item['id']}');
+                        context.push(AppRoutes.announcementDetail(item['id']!));
                       },
                     ),
                   );

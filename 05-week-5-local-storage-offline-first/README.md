@@ -5,7 +5,7 @@
 - **Topik:** Local Storage (SharedPreferences & SQLite), Repository Pattern, Offline-First Architecture, Riverpod State Management, dan Testing.
 - **Nama Mahasiswa:** Louis Judia B Sinaga
 - **NIM:** 244107020071
-- **Kelas:** TI-3A / Semester 5
+- **Kelas:** TI-3H / Semester 5
 
 ---
 

@@ -1,10 +1,16 @@
 import 'package:dio/dio.dart';
-
 import 'auth_repository.dart';
 import 'token_store.dart';
 
 Dio buildApiClient(TokenStore store, AuthRepository auth) {
-  final dio = Dio(BaseOptions(baseUrl: 'https://example-campus-api.test'));
+  final dio = Dio(
+    BaseOptions(
+      baseUrl: 'https://example-campus-api.test',
+      connectTimeout: const Duration(seconds: 3),
+      receiveTimeout: const Duration(seconds: 3),
+    ),
+  );
+
   dio.interceptors.add(
     InterceptorsWrapper(
       onRequest: (options, handler) async {
@@ -12,6 +18,38 @@ Dio buildApiClient(TokenStore store, AuthRepository auth) {
         if (access != null) {
           options.headers['Authorization'] = 'Bearer $access';
         }
+
+        // Mock simulation handler untuk endpoint uji coba /protected-data
+        if (options.path == '/protected-data') {
+          final authHeader = options.headers['Authorization'] as String?;
+          if (authHeader == null || !authHeader.contains('mock-access-renewed')) {
+            // Token lama -> tolak dengan HTTP 401 agar interceptor onError bekerja
+            return handler.reject(
+              DioException(
+                requestOptions: options,
+                response: Response(
+                  requestOptions: options,
+                  statusCode: 401,
+                  statusMessage: 'Unauthorized (Token kedaluwarsa)',
+                ),
+                type: DioExceptionType.badResponse,
+              ),
+            );
+          } else {
+            // Token baru -> terima dengan HTTP 200
+            return handler.resolve(
+              Response(
+                requestOptions: options,
+                statusCode: 200,
+                data: {
+                  'status': 'success',
+                  'message': 'Data terlindungi berhasil diakses dengan access token baru!',
+                },
+              ),
+            );
+          }
+        }
+
         handler.next(options);
       },
       onError: (e, handler) async {

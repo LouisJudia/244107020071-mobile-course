@@ -66,20 +66,32 @@ class AnnouncementPage extends StatelessWidget {
                   ),
             ),
             const SizedBox(height: 8),
-            Row(
+            Wrap(
+              spacing: 16,
+              runSpacing: 4,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                const Icon(Icons.person_outline, size: 16, color: Colors.grey),
-                const SizedBox(width: 4),
-                Text(
-                  item['author']!,
-                  style: const TextStyle(color: Colors.grey, fontSize: 13),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.person_outline, size: 16, color: Colors.grey),
+                    const SizedBox(width: 4),
+                    Text(
+                      item['author']!,
+                      style: const TextStyle(color: Colors.grey, fontSize: 13),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 16),
-                const Icon(Icons.calendar_today_outlined, size: 16, color: Colors.grey),
-                const SizedBox(width: 4),
-                Text(
-                  item['date']!,
-                  style: const TextStyle(color: Colors.grey, fontSize: 13),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.calendar_today_outlined, size: 16, color: Colors.grey),
+                    const SizedBox(width: 4),
+                    Text(
+                      item['date']!,
+                      style: const TextStyle(color: Colors.grey, fontSize: 13),
+                    ),
+                  ],
                 ),
               ],
             ),
