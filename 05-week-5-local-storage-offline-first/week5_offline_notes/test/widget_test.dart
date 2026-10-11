@@ -1,30 +1,63 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:week5_offline_notes/data/local/note.dart';
+import 'package:week5_offline_notes/data/repositories/note_repository.dart';
+import 'package:week5_offline_notes/data/sync.dart';
 import 'package:week5_offline_notes/main.dart';
+import 'package:week5_offline_notes/pages/notes_page.dart';
+
+class MockNoteRepository extends NoteRepository {
+  MockNoteRepository() : super(openDb: () => throw UnimplementedError());
+
+  @override
+  Future<List<Note>> fetchNotes() async {
+    return [
+      Note(
+        id: 1,
+        title: 'Catatan Pertama',
+        body: 'Testing UI widget',
+        updatedAt: DateTime.now(),
+        dirty: false,
+      ),
+    ];
+  }
+
+  @override
+  Future<int> countDirty() async => 0;
+}
+
+class MockSyncService extends SyncService {
+  MockSyncService() : super(openDb: () => throw UnimplementedError());
+
+  @override
+  Future<List<Post>> loadPostsCacheFirst({bool forceOffline = false}) async => [];
+
+  @override
+  Future<List<Post>> readCachedPosts() async => [];
+
+  @override
+  Future<int> syncNotes(NoteRepository repo) async => 0;
+}
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('OfflineNotesApp smoke test', (WidgetTester tester) async {
+    SharedPreferences.setMockInitialValues({'dark_mode': false});
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          noteRepositoryProvider.overrideWithValue(MockNoteRepository()),
+          syncServiceProvider.overrideWithValue(MockSyncService()),
+        ],
+        child: const OfflineNotesApp(),
+      ),
+    );
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    await tester.pumpAndSettle();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.text('Offline-First Notes'), findsOneWidget);
+    expect(find.text('Catatan Lokal'), findsOneWidget);
+    expect(find.text('Catatan Pertama'), findsOneWidget);
   });
 }

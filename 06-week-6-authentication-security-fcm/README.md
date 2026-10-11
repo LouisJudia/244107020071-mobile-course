@@ -1,467 +1,152 @@
-# 🔐 Flutter Authentication, Security & Firebase Cloud Messaging (FCM)
+# Laporan Praktikum Week 6: Authentication, Security, & FCM (`campus_notify`)
 
-> Codelab Minggu 6 — Authentication, Security, dan Firebase Cloud Messaging pada Flutter
-
-**Terakhir diperbarui:** 27 September 2026
-
----
-
-## 📌 Deskripsi
-
-Project ini membahas implementasi konsep autentikasi, keamanan token, serta integrasi Firebase Cloud Messaging (FCM) pada aplikasi Flutter.
-
-Materi utama yang dipelajari:
-
-- Authentication flow menggunakan Firebase Auth, JWT, OAuth, dan Google Login.
-- Perbedaan ID token, access token, dan refresh token.
-- Penyimpanan token secara aman menggunakan secure storage.
-- Implementasi token refresh otomatis.
-- Arsitektur Firebase Cloud Messaging.
-- Notification permission dan lifecycle FCM token.
-- Perbedaan notification payload dan data payload.
-- Handling deep link dari notifikasi menggunakan GoRouter.
-- Prinsip keamanan dasar aplikasi mobile.
+**NAMA**: [Isi Nama Anda]  
+**NIM**: 244107020071  
+**MATA KULIAH**: Pemrograman Mobile  
 
 ---
 
-# 🎯 Tujuan Pembelajaran
-
-Setelah menyelesaikan codelab ini, mahasiswa mampu:
-
-- Menjelaskan alur autentikasi:
-  - Firebase Authentication
-  - JWT
-  - OAuth
-  - Google Login
-
-- Memahami perbedaan:
-
-| Token | Fungsi |
-|---|---|
-| ID Token | Identitas pengguna yang diverifikasi backend |
-| Access Token | Izin akses API dengan masa berlaku pendek |
-| Refresh Token | Mendapatkan access token baru tanpa login ulang |
-
-- Menyimpan token secara aman menggunakan secure storage.
-- Menerapkan mekanisme refresh token otomatis.
-- Memahami arsitektur Firebase Cloud Messaging.
-- Mengelola lifecycle FCM token.
-- Menangani notifikasi pada berbagai kondisi aplikasi.
-- Menerapkan prinsip keamanan mobile application.
-
----
-
-# 🛠️ Persiapan
-
-Sebelum menjalankan project, pastikan sudah tersedia:
-
-## Software
-
-- Flutter SDK
-- VS Code + Flutter Extension
-- Android Emulator / Device Android
-- Firebase Account (Spark Plan)
-
-## Pengetahuan Dasar
-
-Project ini membutuhkan pemahaman:
-
-- Flutter Riverpod
-- AsyncValue
-- GoRouter
-- Dio
-- Repository Pattern
-
----
-
-# 🔑 Authentication Concept
-
-## Model Authentication
-
-Terdapat beberapa pola autentikasi yang umum digunakan pada aplikasi modern.
-
-| Metode | Cara Kerja | Penggunaan |
-|---|---|---|
-| Firebase Auth | SDK Firebase menghasilkan ID Token JWT | Aplikasi yang membutuhkan login cepat |
-| JWT + Refresh Token | Backend membuat access token dan refresh token | REST API milik sendiri |
-| OAuth | Provider memberikan authorization token | Social login dan SSO |
-
----
-
-# 🔐 Token Management
-
-Dalam aplikasi modern terdapat tiga jenis token:
-
-## 1. ID Token
-
-Digunakan sebagai bukti identitas pengguna.
-
-Contoh:
-
-```
-User login → Firebase menghasilkan ID Token
-Backend melakukan verifikasi token
-```
-
----
-
-## 2. Access Token
-
-Token dengan masa berlaku pendek yang digunakan untuk request API.
-
-Contoh:
-
-```
-Authorization: Bearer access_token
-```
-
-Biasanya memiliki masa aktif:
-
-```
-±15 menit
-```
-
----
-
-## 3. Refresh Token
-
-Token dengan masa berlaku panjang yang digunakan untuk mendapatkan access token baru.
-
-Contoh flow:
-
-```text
-Login
- |
- |-- access token (15 menit)
- |
- |-- refresh token (7 hari)
-        |
-        |
-Request API
- |
- |-- access token expired?
-        |
-        YES
-        |
-        Tukar refresh token
-        |
-        Access token baru
-        |
-        Ulang request
-```
-
-Ketentuan keamanan:
-
-✅ Refresh token disimpan menggunakan:
-
-```
-flutter_secure_storage
-```
-
-❌ Jangan menyimpan token di:
-
-```
-SharedPreferences
-```
-
----
-
-# 📱 Firebase Cloud Messaging (FCM)
-
-## Arsitektur FCM
-
-```
-             Kirim pesan
-App Server -----------------> Firebase Cloud Messaging
-
-Firebase Cloud Messaging
-              |
-              |
-              v
-
-      Android / iOS Device
-
-              |
-              |
-       Flutter Application
-```
-
----
-
-# 🔔 FCM Token Lifecycle
-
-Alur pengiriman notifikasi:
-
-1. User membuka aplikasi.
-2. Aplikasi meminta permission notifikasi.
-3. Flutter mendapatkan registration token.
-
-Contoh:
-
-```dart
-FirebaseMessaging.instance.getToken();
-```
-
-4. Token dikirim ke backend.
-5. Backend menyimpan token berdasarkan user.
-6. Backend mengirim pesan melalui FCM.
-
----
-
-# 📩 Notification Payload vs Data Payload
-
-FCM memiliki dua jenis payload:
-
-| Payload | Isi | Perilaku |
-|---|---|---|
-| Notification Payload | title dan body | Ditampilkan otomatis oleh sistem |
-| Data Payload | key-value custom | Diproses oleh aplikasi |
-
----
-
-## Notification Payload
-
-Contoh:
-
-```json
-{
-  "notification": {
-    "title": "Pengumuman",
-    "body": "Jadwal kuliah berubah"
-  }
-}
-```
-
-Digunakan untuk:
-
-- Judul notifikasi
-- Isi pesan
-- Tampilan kepada user
-
----
-
-## Data Payload
-
-Contoh:
-
-```json
-{
-  "data": {
-    "route": "/pengumuman/3"
-  }
-}
-```
-
-Digunakan untuk:
-
-- Deep link
-- Navigasi halaman tertentu
-- Data tambahan aplikasi
-
----
-
-# 📌 Best Practice Notification
-
-Gunakan kombinasi:
-
-```
-notification + data payload
-```
-
-Contoh:
-
-```json
-{
-  "notification": {
-    "title": "Pengumuman Akademik",
-    "body": "Nilai sudah tersedia"
-  },
-  "data": {
-    "route": "/nilai"
-  }
-}
-```
-
-Keterangan:
-
-- `notification`
-  → informasi yang dibaca user
-
-- `data.route`
-  → tujuan halaman saat notifikasi ditekan
-
----
-
-# 📲 Handling Application State
-
-FCM memiliki tiga kondisi utama:
-
-| State | Kondisi | Handler |
-|---|---|---|
-| Foreground | Aplikasi sedang terbuka | `FirebaseMessaging.onMessage` |
-| Background | Aplikasi diminimize | `onMessageOpenedApp` |
-| Terminated | Aplikasi ditutup | `getInitialMessage()` |
-
----
-
-# 🚀 Flow Notification Handling
-
-## Foreground
-
-Ketika aplikasi aktif:
-
-```dart
-FirebaseMessaging.onMessage.listen((message) {
-  // tampilkan local notification
-});
-```
-
-Notifikasi perlu ditampilkan manual.
-
----
-
-## Background
-
-Ketika aplikasi berada di background:
-
-```
-Push Notification
-        |
-        |
-User klik notifikasi
-        |
-        |
-onMessageOpenedApp
-        |
-        |
-GoRouter menuju halaman tujuan
-```
-
----
-
-## Terminated
-
-Ketika aplikasi benar-benar ditutup:
-
-```dart
-FirebaseMessaging.instance
-    .getInitialMessage();
-```
-
-Digunakan untuk mengetahui notifikasi yang membuka aplikasi.
-
----
-
-# 🔒 Mobile Security Checklist
-
-## Jangan menyimpan secret di source code
-
-❌ Contoh salah:
-
-```dart
-const apiKey = "SECRET_KEY";
-```
-
-Gunakan:
-
-- Environment variable
-- Backend configuration
-- Secure storage
-
----
-
-## Jangan melakukan logging token
-
-❌ Hindari:
-
-```dart
-print(accessToken);
-```
-
-Karena token dapat disalahgunakan.
-
----
-
-## Gunakan Secure Storage
-
-Contoh:
-
-```dart
-final storage = FlutterSecureStorage();
-
-await storage.write(
-  key: "refresh_token",
-  value: token,
-);
-```
-
----
-
-# 📂 Struktur Project (Rekomendasi)
-
+## 📌 Praktikum 1: Login + Secure Storage + Token Refresh
+
+### 1. Penjelasan Ringkas
+Praktikum 1 mengimplementasikan sistem autentikasi aman pada aplikasi Flutter `campus_notify` menggunakan arsitektur berikut:
+- **Penyimpanan Token Aman (`TokenStore`)**: Menggunakan `flutter_secure_storage` untuk menyimpan `access_token` dan `refresh_token` di dalam secure hardware vault perangkat.
+- **Repository Auth (`AuthRepository`)**: Mengelola simulasi login dan proses perpanjangan (*refresh*) token JWT.
+- **Interceptor Dio (`buildApiClient`)**: Menambahkan header `Authorization: Bearer <access>` secara otomatis pada setiap HTTP request, serta secara otomatis menangkap status `HTTP 401` untuk melakukan *token refresh* transparan dan mengulang *request* (retry).
+- **Auth Provider & Route Guarding (`AuthNotifier` & `GoRouter`)**: Mengontrol proteksi rute (`/login` ↔ `/`) secara reakatif menggunakan Riverpod.
+
+### 2. Struktur File Kunci
 ```
 lib/
-│
-├── auth/
-│   ├── repository/
-│   ├── provider/
-│   └── models/
-│
-├── notification/
-│   ├── firebase_service.dart
-│   └── notification_handler.dart
-│
-├── router/
-│   └── app_router.dart
-│
-├── security/
-│   └── secure_storage.dart
-│
-└── main.dart
+├── data/
+│   ├── token_store.dart       # Penyimpanan token terenkripsi
+│   ├── auth_repository.dart   # Mock authentication & refresh logic
+│   └── api_client.dart        # Dio interceptor (401 auto-refresh)
+├── providers/
+│   └── auth_provider.dart     # Riverpod StateNotifier auth
+└── pages/
+    ├── login_page.dart        # Form login interaktif
+    ├── home_page.dart         # Dashboard & indikator token
+    └── announcement_page.dart # Detail pengumuman
+```
+
+### 3. Bukti Kode Kunci Praktikum 1
+#### A. Dio Interceptor Auto-Refresh 401 ([`lib/data/api_client.dart`](file:///c:/Users/louis/Semester%205/244107020071-mobile-course/06-week-6-authentication-security-fcm/campus_notify/lib/data/api_client.dart))
+```dart
+onError: (e, handler) async {
+  if (e.response?.statusCode == 401) {
+    final refresh = await store.readRefresh();
+    if (refresh == null) return handler.next(e);
+    try {
+      final renewed = await auth.refresh(refresh);
+      await store.save(access: renewed, refresh: refresh);
+      final retry = await dio.fetch(
+        e.requestOptions..headers['Authorization'] = 'Bearer $renewed',
+      );
+      return handler.resolve(retry);
+    } catch (_) {
+      await store.clear(); // Refresh token kadaluarsa -> paksa relogin
+    }
+  }
+  handler.next(e);
+}
 ```
 
 ---
 
-# 🧪 Testing Checklist
+## 📌 Praktikum 2: FCM, Permission, dan Token Lifecycle
 
-Pastikan melakukan pengujian:
+### 1. Penjelasan Ringkas
+Praktikum 2 mengintegrasikan Firebase Cloud Messaging (FCM) dan local notifications pada aplikasi:
+- **Perizinan Notification (`requestNotificationPermission`)**: Meminta izin runtime notifikasi pada Android 13+ dan iOS.
+- **Siklus Hidup Token (`initFcmToken`)**:
+  - Mengambil token perangkat (`getToken()`).
+  - Mendaftarkan listener `onTokenRefresh` untuk memperbarui token di backend ketika token dirotasi atau aplikasi di-reinstall.
+  - Berlangganan ke topik kampus (`pengumuman-kampus`).
+- **Keamanan Informasi Token**: Menampilkan token FCM pada kartu Debug UI secara **terpotong (12 karakter pertama + `...`)** demi menjaga keamanan dan privasi dalam laporan screenshot.
 
-## Authentication
+### 2. Bukti Kode Kunci Praktikum 2
+#### A. Token Lifecycle Management ([`lib/messaging/push_service.dart`](file:///c:/Users/louis/Semester%205/244107020071-mobile-course/06-week-6-authentication-security-fcm/campus_notify/lib/messaging/push_service.dart))
+```dart
+Future<void> initFcmToken({
+  required Future<void> Function(String token) onToken,
+}) async {
+  // 1. Ambil token awal
+  final token = await FirebaseMessaging.instance.getToken();
+  if (token != null) await onToken(token);
 
-- [ ] Login berhasil
-- [ ] Access token tersimpan
-- [ ] Refresh token tersimpan aman
-- [ ] Token expired melakukan refresh
-- [ ] Logout menghapus token
+  // 2. Listener rotasi/perubahan token
+  FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
+    await onToken(newToken);
+  });
+
+  // 3. Subskripsi ke topik pengumuman
+  await FirebaseMessaging.instance.subscribeToTopic('pengumuman-kampus');
+}
+```
+
+#### B. Pengiriman Token Ke Backend & Truncate UI ([`lib/pages/home_page.dart`](file:///c:/Users/louis/Semester%205/244107020071-mobile-course/06-week-6-authentication-security-fcm/campus_notify/lib/pages/home_page.dart))
+```dart
+// Format tampilan token terpotong (12 karakter pertama + ...)
+String _formatTruncatedToken(String? token) {
+  if (token == null || token.isEmpty) return 'Belum tersedia (mock/offline)';
+  if (token.length <= 12) return token;
+  return '${token.substring(0, 12)}...';
+}
+```
 
 ---
 
-## FCM
+## 📸 Bukti Hasil Pengujian (Screenshots & GIFs)
 
-- [ ] Permission notification muncul
-- [ ] Token berhasil dibuat
-- [ ] Token refresh berjalan
-- [ ] Notification foreground berhasil
-- [ ] Notification background berhasil
-- [ ] Notification terminated berhasil
-- [ ] Deep link menuju halaman benar
+Berikut adalah dokumentasi visual hasil pengujian aplikasi:
+
+### 1. Bukti Form Login & Secure Storage (Praktikum 1)
+![Bukti Login & Secure Storage](screenshots/01-login-secure-storage.gif)  
+*Keterangan: Proses autentikasi user, pengisian email & kata sandi, serta penyimpanan token ke Secure Storage.*
 
 ---
 
-# 📚 Kesimpulan
+### 2. Bukti Automatic Token Refresh Interceptor (Praktikum 1)
+![Bukti Automatic Token Refresh](screenshots/02-token-refresh-interceptor.gif)  
+*Keterangan: Simulasi HTTP 401 saat menekan tombol "Uji Refresh Token", Dio Interceptor otomatis memperbarui token tanpa mereset halaman.*
 
-Pada codelab ini dipelajari bagaimana membangun sistem autentikasi dan notifikasi yang lebih aman pada aplikasi Flutter.
+---
 
-Konsep utama:
+### 3. Bukti FCM Masked Token & Lifecycle (Praktikum 2)
+![Bukti FCM Masked Token](screenshots/03-fcm-masked-token.png)  
+*Keterangan: Tampilan kartu Debug menunjukkan token FCM terpotong 12 karakter pertama + `...` demi privasi laporan.*
 
-✅ Authentication flow  
-✅ JWT token management  
-✅ Secure token storage  
-✅ Refresh token mechanism  
-✅ Firebase Cloud Messaging  
-✅ Notification lifecycle  
-✅ Deep link navigation  
-✅ Mobile application security  
+---
 
-Dengan konsep ini, aplikasi Flutter dapat memiliki sistem login dan notifikasi yang mendekati standar aplikasi industri.
+### 4. Bukti Uji Push Notification dari Firebase Console (Praktikum 2)
+![Bukti FCM Console Test](screenshots/04-fcm-console-test.png)  
+*Keterangan: Banner notifikasi sistem muncul saat aplikasi di background dan berpindah ke aplikasi ketika diklik.*
 
+---
+
+## 📊 Tabel Verifikasi Pengujian
+
+| Pengujian | Deskripsi Bukti | Status |
+|---|---|---|
+| **Form Login & Storage** | Token `access` & `refresh` tersimpan otomatis di `FlutterSecureStorage` setelah login sukses | ✅ Berhasil |
+| **Automatic Token Refresh** | Pengujian tombol *Uji Refresh Token (Dio)* menangkap HTTP 401 dan memperbarui token tanpa me-logout pengguna | ✅ Berhasil |
+| **Masking FCM Token** | Token FCM ditampilkan terpotong `mock-fcm-tok...` pada kartu debug demi privasi | ✅ Berhasil |
+| **Analisis Kode (`dart analyze`)** | Proyek bersih dari error dan warning compilation | ✅ Passed (0 Issues) |
+
+---
+
+## 🚀 Cara Menjalankan Project
+
+1. Masuk ke direktori project:
+   ```bash
+   cd campus_notify
+   ```
+2. Jalankan pengujian analisis statis:
+   ```bash
+   dart analyze lib
+   ```
+3. Jalankan aplikasi:
+   ```bash
+   flutter run
+   ```
