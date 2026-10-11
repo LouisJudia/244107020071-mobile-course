@@ -1,15 +1,6 @@
 # Laporan Praktikum Pemrograman Mobile — Minggu 5
 # Local Storage & Offline-First Notes
 
-- **Mata Kuliah:** Pemrograman Mobile
-- **Topik:** Local Storage (SharedPreferences & SQLite), Repository Pattern, Offline-First Architecture, Riverpod State Management, dan Testing.
-- **Nama Mahasiswa:** Louis Judia B Sinaga
-- **NIM:** 244107020071
-- **Kelas:** TI-3H / Semester 5
-
----
-
-
 ## 1. Tujuan Pembelajaran
 Setelah menyelesaikan praktikum Minggu 5 ini:
 1. Mampu membedakan karakteristik dan use-case antara *key-value storage* (`SharedPreferences`), *relational storage* (`SQLite`), dan *NoSQL/reactive storage* (`Hive`, `Drift`).
@@ -320,43 +311,37 @@ No issues found! (ran in 3.2s)
 
 ---
 
-## 9. Bukti Screenshot Aplikasi
+## 9. Bukti Screenshot Aplikasi (Animasi GIF)
 
-Berikut adalah dokumentasi tangkapan layar antarmuka aplikasi dalam berbagai skenario:
+Berikut adalah dokumentasi animasi GIF hasil pengujian fitur aplikasi yang telah diperbaiki dengan perenderan font nyata:
 
 ### 9.1 Daftar Catatan saat Offline dengan Badge "Belum tersinkron" (Dirty Flag)
 Menampilkan catatan yang dibuat dalam keadaan offline. Kolom `dirty = 1` ditandai dengan badge oranye dan indikator banner offline aktif:
-![Catatan Offline Dirty](screenshots/01_notes_offline_dirty.png)
+![Catatan Offline Dirty](screenshots/01_notes_offline_dirty.gif)
 
 ---
 
-### 9.2 Daftar Catatan setelah Sinkronisasi Online Berhasil
-Setelah menekan tombol sinkronisasi saat online, `syncNotes` mengubah semua flag `dirty = 0`, badge berubah menjadi hijau ("Tersinkron"), dan counter dirty kembali menjadi 0:
-![Catatan Synced Online](screenshots/02_notes_synced_online.png)
+### 9.2 Alur Sinkronisasi Online & Perubahan Status Flag
+Ketika koneksi online aktif dan tombol sinkronisasi ditekan, `syncNotes` mengubah semua flag `dirty = 0`, badge berubah warna hijau ("Tersinkron"), dan counter pending sinkronisasi otomatis kembali ke 0:
+![Catatan Synced Online](screenshots/02_notes_synced_online.gif)
 
 ---
 
-### 9.3 Halaman Detail Catatan (Membaca dari SQLite Lokal)
-Halaman detail catatan yang diakses secara independen berdasarkan ID dari database SQLite:
-![Detail Catatan](screenshots/03_note_detail.png)
+### 9.3 Navigasi ke Halaman Detail Catatan (SQLite Lokal)
+Menampilkan transisi ke halaman detail catatan yang membaca data secara independen berdasarkan ID langsung dari basis data SQLite lokal:
+![Detail Catatan](screenshots/03_note_detail.gif)
 
 ---
 
-### 9.4 Halaman Pengaturan (Tema Terang & Info Terakhir Dibuka)
-Menampilkan pengaturan dengan preferensi tersimpan di `SharedPreferences`:
-![Pengaturan Light Mode](screenshots/04_settings_light.png)
+### 9.4 Pengaturan Tema Terang & Gelap Persisten (SharedPreferences)
+Animasi transisi pengaturan tema terang (*light mode*) dan tema gelap (*dark mode*) yang tersimpan secara persisten pada `SharedPreferences`:
+![Pengaturan Theme Toggle](screenshots/04_settings_theme_toggle.gif)
 
 ---
 
-### 9.5 Halaman Pengaturan (Tema Gelap / Dark Mode Aktif)
-Aplikasi merender tema gelap persisten berdasarkan preferensi `SharedPreferences`:
-![Pengaturan Dark Mode](screenshots/05_settings_dark.png)
-
----
-
-### 9.6 Fitur Cache-First API Posts
-Menampilkan data post yang dibaca langsung dari cache SQLite lokal (`cached_posts`), memungkinkan akses data API seketika tanpa koneksi internet:
-![Cache-First API Posts](screenshots/06_cache_first_api.png)
+### 9.5 Fitur Tab Cache-First API Posts
+Menampilkan data post yang dibaca seketika dari cache tabel SQLite lokal (`cached_posts`), memungkinkan akses data API instan tanpa dependensi koneksi internet:
+![Cache-First API Posts](screenshots/05_cache_first_api.gif)
 
 ---
 

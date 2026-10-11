@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,11 +67,54 @@ Future<void> saveScreenshot(
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       if (byteData != null) {
         final bytes = byteData.buffer.asUint8List();
-        File('../screenshots/$filename').writeAsBytesSync(bytes);
-        File('../screenshoot/$filename').writeAsBytesSync(bytes);
+        final path = '../screenshots/$filename';
+        File(path).writeAsBytesSync(bytes);
       }
       image.dispose();
     });
+  }
+}
+
+Future<void> loadRealFonts() async {
+  // 1. Regular System Font
+  final fontFile = File(r'C:\Windows\Fonts\segoeui.ttf');
+  if (fontFile.existsSync()) {
+    final bytes = fontFile.readAsBytesSync();
+    for (final family in ['Roboto', 'sans-serif', '.SF Pro Text']) {
+      final fontLoader = FontLoader(family);
+      fontLoader.addFont(Future.value(ByteData.view(bytes.buffer)));
+      await fontLoader.load();
+    }
+  }
+
+  // 2. Bold System Font
+  final boldFontFile = File(r'C:\Windows\Fonts\segoeuib.ttf');
+  if (boldFontFile.existsSync()) {
+    final bytes = boldFontFile.readAsBytesSync();
+    final fontLoader = FontLoader('Roboto');
+    fontLoader.addFont(Future.value(ByteData.view(bytes.buffer)));
+    await fontLoader.load();
+  }
+
+  // 3. Monospace Font
+  final monoFile = File(r'C:\Windows\Fonts\consola.ttf');
+  if (monoFile.existsSync()) {
+    final bytes = monoFile.readAsBytesSync();
+    for (final family in ['monospace', 'Courier', 'Courier New']) {
+      final fontLoader = FontLoader(family);
+      fontLoader.addFont(Future.value(ByteData.view(bytes.buffer)));
+      await fontLoader.load();
+    }
+  }
+
+  // 4. Material Icons Font
+  final iconFile = File(
+      r'C:\Users\louis\flutter\bin\cache\artifacts\material_fonts\materialicons-regular.otf');
+  if (iconFile.existsSync()) {
+    final iconBytes = iconFile.readAsBytesSync();
+    final iconLoader = FontLoader('MaterialIcons');
+    iconLoader.addFont(Future.value(ByteData.view(iconBytes.buffer)));
+    await iconLoader.load();
   }
 }
 
@@ -144,6 +188,11 @@ final samplePosts = [
 ];
 
 void main() {
+  setUpAll(() async {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    await loadRealFonts();
+  });
+
   testWidgets('01 Screenshot Notes Offline Dirty', (tester) async {
     SharedPreferences.setMockInitialValues({'dark_mode': false});
     tester.view.physicalSize = const Size(412, 892);
@@ -222,6 +271,7 @@ void main() {
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               useMaterial3: true,
+              fontFamily: 'Roboto',
               colorSchemeSeed: Colors.indigo,
             ),
             home: const NoteDetailPage(noteId: 1),
@@ -253,6 +303,7 @@ void main() {
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               useMaterial3: true,
+              fontFamily: 'Roboto',
               colorSchemeSeed: Colors.indigo,
             ),
             home: const SettingsPage(),
@@ -284,6 +335,7 @@ void main() {
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               useMaterial3: true,
+              fontFamily: 'Roboto',
               brightness: Brightness.dark,
               colorSchemeSeed: Colors.indigo,
             ),

@@ -32,6 +32,7 @@ class OfflineNotesApp extends ConsumerWidget {
       themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
       theme: ThemeData(
         useMaterial3: true,
+        fontFamily: 'Roboto',
         brightness: Brightness.light,
         colorSchemeSeed: Colors.indigo,
         appBarTheme: const AppBarTheme(
@@ -41,6 +42,7 @@ class OfflineNotesApp extends ConsumerWidget {
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
+        fontFamily: 'Roboto',
         brightness: Brightness.dark,
         colorSchemeSeed: Colors.indigo,
         appBarTheme: const AppBarTheme(
