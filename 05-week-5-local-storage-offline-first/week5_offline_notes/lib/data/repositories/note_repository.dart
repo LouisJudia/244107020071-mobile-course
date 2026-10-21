@@ -15,9 +15,13 @@ class NoteRepository {
   }
 
   Future<Note> addNote({required String title, String body = ''}) async {
+    final cleanTitle = title.trim();
+    if (cleanTitle.isEmpty) {
+      throw ArgumentError('Judul catatan tidak boleh kosong');
+    }
     final db = await _openDb();
     final note = Note(
-      title: title,
+      title: cleanTitle,
       body: body,
       updatedAt: DateTime.now(),
       dirty: true,
