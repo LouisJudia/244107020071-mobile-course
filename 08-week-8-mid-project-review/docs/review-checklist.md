@@ -1,13 +1,5 @@
 # Dokumen Review Checklist & Mid-Project Assessment (Minggu 8)
 
-**Nama Mahasiswa:** Louis Judia  
-**NIM:** 244107020071  
-**Mata Kuliah:** Pemrograman Mobile (Praktikum)  
-**Topik:** #08 | Mid Project Review & Peer Code Review  
-**Repository:** `LouisJudia/244107020071-mobile-course`  
-
----
-
 ## 1. Praktikum 1: Hygiene Branch & Commit Audit
 
 ### 1.1 Hasil Audit Riwayat Git
