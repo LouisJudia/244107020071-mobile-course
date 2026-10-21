@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -16,7 +17,7 @@ import 'package:week5_offline_notes/pages/settings_page.dart';
 
 class ScreenshotNoteRepository extends NoteRepository {
   ScreenshotNoteRepository({required this.notes})
-      : super(openDb: () => throw UnimplementedError());
+    : super(openDb: () => throw UnimplementedError());
 
   final List<Note> notes;
 
@@ -36,7 +37,7 @@ class ScreenshotNoteRepository extends NoteRepository {
 
 class ScreenshotSyncService extends SyncService {
   ScreenshotSyncService({required this.posts})
-      : super(openDb: () => throw UnimplementedError());
+    : super(openDb: () => throw UnimplementedError());
 
   final List<Post> posts;
 
@@ -58,7 +59,10 @@ class OfflineTrueNotifier extends ForceOfflineNotifier {
 }
 
 Future<void> saveScreenshot(
-    WidgetTester tester, GlobalKey key, String filename) async {
+  WidgetTester tester,
+  GlobalKey key,
+  String filename,
+) async {
   final boundary =
       key.currentContext?.findRenderObject() as RenderRepaintBoundary?;
   if (boundary != null) {
@@ -109,7 +113,8 @@ Future<void> loadRealFonts() async {
 
   // 4. Material Icons Font
   final iconFile = File(
-      r'C:\Users\louis\flutter\bin\cache\artifacts\material_fonts\materialicons-regular.otf');
+    r'C:\Users\louis\flutter\bin\cache\artifacts\material_fonts\materialicons-regular.otf',
+  );
   if (iconFile.existsSync()) {
     final iconBytes = iconFile.readAsBytesSync();
     final iconLoader = FontLoader('MaterialIcons');
@@ -170,20 +175,17 @@ final samplePosts = [
   const Post(
     id: 1,
     title: 'sunt aut facere repellat provident occaecati excepturi optio',
-    body:
-        'quia et suscipit suscipit recusandae consequuntur expedita et cum reprehenderit molestiae ut ut quas totam nostrum rerum est autem sunt rem eveniet architecto',
+    body: 'quia et suscipit suscipit recusandae consequuntur expedita et cum reprehenderit molestiae ut ut quas totam nostrum rerum est autem sunt rem eveniet architecto',
   ),
   const Post(
     id: 2,
     title: 'qui est esse',
-    body:
-        'est rerum tempore vitae sequi sint nihil reprehenderit dolor beatae ea dolores neque fugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis',
+    body: 'est rerum tempore vitae sequi sint nihil reprehenderit dolor beatae ea dolores neque fugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis',
   ),
   const Post(
     id: 3,
     title: 'ea molestias quasi exercitationem repellat qui ipsa sit aut',
-    body:
-        'et iusto sed quo iure voluptatem occaecati omnis eligendi aut ad voluptatem doloribus vel accusantium quis pariatur molestiae porro eius odio et labore et velit aut',
+    body: 'et iusto sed quo iure voluptatem occaecati omnis eligendi aut ad voluptatem doloribus vel accusantium quis pariatur molestiae porro eius odio et labore et velit aut',
   ),
 ];
 

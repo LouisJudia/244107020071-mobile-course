@@ -23,11 +23,7 @@ Future<void> main() async {
     debugPrint('Firebase initialized with fallback or unconfigured: $e');
   }
 
-  runApp(
-    const ProviderScope(
-      child: CampusNotifyApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: CampusNotifyApp()));
 }
 
 class RouterNotifier extends ChangeNotifier {
@@ -70,9 +66,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.announcementPattern,
-        builder: (context, state) => AnnouncementPage(
-          id: state.pathParameters['id'] ?? '',
-        ),
+        builder: (context, state) =>
+            AnnouncementPage(id: state.pathParameters['id'] ?? ''),
       ),
     ],
   );

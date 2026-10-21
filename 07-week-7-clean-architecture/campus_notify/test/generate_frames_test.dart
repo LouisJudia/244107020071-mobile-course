@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -45,7 +46,10 @@ class ReadyAuthNotifier extends AuthNotifier {
 }
 
 Future<void> captureBoundary(
-    WidgetTester tester, GlobalKey key, String filename) async {
+  WidgetTester tester,
+  GlobalKey key,
+  String filename,
+) async {
   final boundary =
       key.currentContext?.findRenderObject() as RenderRepaintBoundary?;
   if (boundary != null) {
@@ -95,7 +99,8 @@ Future<void> loadRealFonts() async {
 
   // 4. Material Icons Font
   final iconFile = File(
-      r'C:\Users\louis\flutter\bin\cache\artifacts\material_fonts\materialicons-regular.otf');
+    r'C:\Users\louis\flutter\bin\cache\artifacts\material_fonts\materialicons-regular.otf',
+  );
   if (iconFile.existsSync()) {
     final iconBytes = iconFile.readAsBytesSync();
     final iconLoader = FontLoader('MaterialIcons');
@@ -163,7 +168,9 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
     await tester.enterText(
-        find.byType(TextFormField).first, 'mahasiswa@polinema.ac.id');
+      find.byType(TextFormField).first,
+      'mahasiswa@polinema.ac.id',
+    );
     await tester.enterText(find.byType(TextFormField).last, 'password123');
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
@@ -180,9 +187,7 @@ void main() {
       RepaintBoundary(
         key: key3,
         child: ProviderScope(
-          overrides: [
-            tokenStoreProvider.overrideWithValue(mockStore),
-          ],
+          overrides: [tokenStoreProvider.overrideWithValue(mockStore)],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: appTheme,
@@ -206,9 +211,7 @@ void main() {
       RepaintBoundary(
         key: key4,
         child: ProviderScope(
-          overrides: [
-            tokenStoreProvider.overrideWithValue(refreshedStore),
-          ],
+          overrides: [tokenStoreProvider.overrideWithValue(refreshedStore)],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: appTheme,
@@ -231,9 +234,7 @@ void main() {
       RepaintBoundary(
         key: key5,
         child: ProviderScope(
-          overrides: [
-            tokenStoreProvider.overrideWithValue(refreshedStore),
-          ],
+          overrides: [tokenStoreProvider.overrideWithValue(refreshedStore)],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: appTheme,
@@ -252,8 +253,10 @@ void main() {
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
-                        border:
-                            Border.all(color: Colors.blue.shade400, width: 1.5),
+                        border: Border.all(
+                          color: Colors.blue.shade400,
+                          width: 1.5,
+                        ),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withValues(alpha: 0.12),

@@ -18,14 +18,11 @@ class AuthSessionModel extends AuthSession {
   }
 
   Map<String, dynamic> toMap() => {
-        'access': access,
-        'refresh': refresh,
-        if (email != null) 'email': email,
-      };
+    'access': access,
+    'refresh': refresh,
+    if (email != null) 'email': email,
+  };
 
-  AuthSession toEntity() => AuthSession(
-        access: access,
-        refresh: refresh,
-        email: email,
-      );
+  AuthSession toEntity() =>
+      AuthSession(access: access, refresh: refresh, email: email);
 }

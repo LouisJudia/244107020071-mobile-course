@@ -1,10 +1,11 @@
 import 'package:sqflite/sqflite.dart';
+
 import '../local/db.dart';
 import '../local/note.dart';
 
 class NoteRepository {
   NoteRepository({Future<Database> Function()? openDb})
-      : _openDb = openDb ?? openNotesDb;
+    : _openDb = openDb ?? openNotesDb;
 
   final Future<Database> Function() _openDb;
 
@@ -15,9 +16,13 @@ class NoteRepository {
   }
 
   Future<Note> addNote({required String title, String body = ''}) async {
+    final cleanTitle = title.trim();
+    if (cleanTitle.isEmpty) {
+      throw ArgumentError('Judul catatan tidak boleh kosong');
+    }
     final db = await _openDb();
     final note = Note(
-      title: title,
+      title: cleanTitle,
       body: body,
       updatedAt: DateTime.now(),
       dirty: true,
@@ -57,7 +62,8 @@ class NoteRepository {
   Future<int> countDirty() async {
     final db = await _openDb();
     final rows = await db.rawQuery(
-        'SELECT COUNT(*) AS c FROM notes WHERE dirty = 1');
+      'SELECT COUNT(*) AS c FROM notes WHERE dirty = 1',
+    );
     return ((rows.first['c'] as num?)?.toInt() ?? 0);
   }
 

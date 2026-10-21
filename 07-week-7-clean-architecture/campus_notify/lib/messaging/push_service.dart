@@ -1,10 +1,13 @@
 import 'dart:async';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import '../routes.dart';
 
-final FlutterLocalNotificationsPlugin _local = FlutterLocalNotificationsPlugin();
+final FlutterLocalNotificationsPlugin _local =
+    FlutterLocalNotificationsPlugin();
 String? pendingDeepLink;
 
 /// Background handler WAJIB berupa fungsi top-level (bukan method kelas)
@@ -43,7 +46,9 @@ Future<bool> requestNotificationPermission() async {
   }
 }
 
-Future<void> initLocalNotifications({void Function(String route)? onSelectNotification}) async {
+Future<void> initLocalNotifications({
+  void Function(String route)? onSelectNotification,
+}) async {
   const android = AndroidInitializationSettings('@mipmap/ic_launcher');
   const ios = DarwinInitializationSettings();
 
@@ -123,7 +128,9 @@ void listenNotificationHandlers(void Function(String route) go) {
 }
 
 /// Menangani notifikasi saat aplikasi dibuka dari keadaan Terminated (mati)
-Future<void> handleTerminatedNotification(void Function(String route) go) async {
+Future<void> handleTerminatedNotification(
+  void Function(String route) go,
+) async {
   try {
     final initial = await FirebaseMessaging.instance.getInitialMessage();
     if (initial != null) {

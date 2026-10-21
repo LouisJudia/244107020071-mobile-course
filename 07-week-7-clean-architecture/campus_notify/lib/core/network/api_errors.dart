@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+
 import '../errors/failures.dart';
 
 /// Mengubah DioException menjadi Failure domain
@@ -8,26 +9,36 @@ Failure dioExceptionToFailure(DioException error) {
     case DioExceptionType.sendTimeout:
     case DioExceptionType.receiveTimeout:
     case DioExceptionType.connectionError:
-      return const NetworkFailure('Koneksi internet bermasalah atau waktu koneksi habis.');
+      return const NetworkFailure(
+        'Koneksi internet bermasalah atau waktu koneksi habis.',
+      );
     case DioExceptionType.badResponse:
       final statusCode = error.response?.statusCode;
       if (statusCode == 401) {
-        return const AuthFailure('Sesi login telah kedaluwarsa. Silakan login kembali.');
+        return const AuthFailure(
+          'Sesi login telah kedaluwarsa. Silakan login kembali.',
+        );
       }
       if (statusCode == 403) {
         return const AuthFailure('Akses ditolak. Anda tidak memiliki izin.');
       }
       if (statusCode == 404) {
-        return const ServerFailure('Data yang dicari tidak ditemukan di server.');
+        return const ServerFailure(
+          'Data yang dicari tidak ditemukan di server.',
+        );
       }
       if (statusCode != null && statusCode >= 500) {
-        return const ServerFailure('Server kampus sedang mengalami gangguan teknis.');
+        return const ServerFailure(
+          'Server kampus sedang mengalami gangguan teknis.',
+        );
       }
       return ServerFailure('Terjadi kendala pada server (Kode: $statusCode).');
     case DioExceptionType.cancel:
       return const NetworkFailure('Permintaan dibatalkan.');
     default:
-      return const NetworkFailure('Terjadi kendala jaringan yang tidak terduga.');
+      return const NetworkFailure(
+        'Terjadi kendala jaringan yang tidak terduga.',
+      );
   }
 }
 
