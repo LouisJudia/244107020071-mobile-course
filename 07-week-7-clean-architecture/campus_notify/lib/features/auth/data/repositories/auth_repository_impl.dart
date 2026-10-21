@@ -39,10 +39,7 @@ class AuthRepositoryImpl implements AuthRepository {
         email: email,
       );
 
-      return (
-        session: model.toEntity(),
-        failure: null,
-      );
+      return (session: model.toEntity(), failure: null);
     } catch (e) {
       return (
         session: null,
@@ -60,16 +57,16 @@ class AuthRepositoryImpl implements AuthRepository {
       if (refreshToken.isEmpty) {
         return (
           renewedAccessToken: null,
-          failure: const AuthFailure('Refresh token tidak ditemukan atau kosong.'),
+          failure: const AuthFailure(
+            'Refresh token tidak ditemukan atau kosong.',
+          ),
         );
       }
 
-      final renewed = 'mock-access-renewed-${DateTime.now().millisecondsSinceEpoch}';
+      final renewed =
+          'mock-access-renewed-${DateTime.now().millisecondsSinceEpoch}';
       await store.save(access: renewed, refresh: refreshToken);
-      return (
-        renewedAccessToken: renewed,
-        failure: null,
-      );
+      return (renewedAccessToken: renewed, failure: null);
     } catch (e) {
       return (
         renewedAccessToken: null,
@@ -108,10 +105,7 @@ class AuthRepositoryImpl implements AuthRepository {
         email: email,
       );
 
-      return (
-        session: model.toEntity(),
-        failure: null,
-      );
+      return (session: model.toEntity(), failure: null);
     } catch (e) {
       return (
         session: null,

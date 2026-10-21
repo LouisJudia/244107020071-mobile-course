@@ -7,7 +7,8 @@ class CheckAuthStatusUseCase {
   const CheckAuthStatusUseCase(this._repository);
   final AuthRepository _repository;
 
-  Future<({bool isAuthenticated, AuthSession? session, Failure? failure})> call() async {
+  Future<({bool isAuthenticated, AuthSession? session, Failure? failure})>
+  call() async {
     final result = await _repository.getSavedSession();
     if (result.failure != null) {
       return (isAuthenticated: false, session: null, failure: result.failure);

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../features/auth/data/datasources/token_store.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
@@ -25,7 +26,8 @@ Dio buildApiClient(TokenStore store, AuthRepository auth) {
         // Mock simulation handler untuk endpoint uji coba /protected-data
         if (options.path == '/protected-data') {
           final authHeader = options.headers['Authorization'] as String?;
-          if (authHeader == null || !authHeader.contains('mock-access-renewed')) {
+          if (authHeader == null ||
+              !authHeader.contains('mock-access-renewed')) {
             // Token lama -> tolak dengan HTTP 401 agar interceptor onError bekerja
             return handler.reject(
               DioException(

@@ -22,10 +22,13 @@ void main() {
       expect(routeFromMessage(data), '/pengumuman/3');
     });
 
-    test('data payload hanya dengan id otomatis diarahkan ke detail pengumuman', () {
-      const data = {'id': '101'};
-      expect(routeFromMessage(data), '/pengumuman/101');
-    });
+    test(
+      'data payload hanya dengan id otomatis diarahkan ke detail pengumuman',
+      () {
+        const data = {'id': '101'};
+        expect(routeFromMessage(data), '/pengumuman/101');
+      },
+    );
 
     test('konstanta rute AppRoutes terpusat dengan benar', () {
       expect(AppRoutes.login, '/login');

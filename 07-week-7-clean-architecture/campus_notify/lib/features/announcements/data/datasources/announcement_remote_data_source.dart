@@ -13,8 +13,7 @@ class AnnouncementRemoteDataSourceImpl implements AnnouncementRemoteDataSource {
       'date': '07 Okt 2024',
       'category': 'Akademik',
       'author': 'Biro Akademik',
-      'content':
-          'Ujian Tengah Semester (UTS) akan dilaksanakan secara luring mulai tanggal 14 Oktober 2024. Harap persiapkan kartu ujian dan hadir tepat waktu.',
+      'content': 'Ujian Tengah Semester (UTS) akan dilaksanakan secara luring mulai tanggal 14 Oktober 2024. Harap persiapkan kartu ujian dan hadir tepat waktu.',
     },
     {
       'id': '102',
@@ -22,8 +21,7 @@ class AnnouncementRemoteDataSourceImpl implements AnnouncementRemoteDataSource {
       'date': '05 Okt 2024',
       'category': 'Beasiswa',
       'author': 'Kemahasiswaan',
-      'content':
-          'Pendaftaran Beasiswa Prestasi periode Ganjil telah dibuka sampai 20 Oktober 2024. Lengkapi berkas persyaratannya melalui portal akademik.',
+      'content': 'Pendaftaran Beasiswa Prestasi periode Ganjil telah dibuka sampai 20 Oktober 2024. Lengkapi berkas persyaratannya melalui portal akademik.',
     },
     {
       'id': '103',
@@ -31,8 +29,7 @@ class AnnouncementRemoteDataSourceImpl implements AnnouncementRemoteDataSource {
       'date': '01 Okt 2024',
       'category': 'Sistem',
       'author': 'Tim UPT IT',
-      'content':
-          'Server portal akademik akan mengalami downtime sementara pada Sabtu malam jam 23:00 - 03:00 WIB untuk peningkatan performa.',
+      'content': 'Server portal akademik akan mengalami downtime sementara pada Sabtu malam jam 23:00 - 03:00 WIB untuk peningkatan performa.',
     },
   ];
 

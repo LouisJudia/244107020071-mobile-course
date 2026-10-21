@@ -1,6 +1,8 @@
 import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:sqflite/sqflite.dart';
+
 import 'local/db.dart';
 import 'repositories/note_repository.dart';
 
@@ -9,38 +11,29 @@ class Post {
   final String title;
   final String body;
 
-  const Post({
-    required this.id,
-    required this.title,
-    required this.body,
-  });
+  const Post({required this.id, required this.title, required this.body});
 
   factory Post.fromJson(Map<String, dynamic> json) => Post(
-        id: (json['id'] as num?)?.toInt() ?? 0,
-        title: json['title'] as String? ?? '',
-        body: json['body'] as String? ?? '',
-      );
+    id: (json['id'] as num?)?.toInt() ?? 0,
+    title: json['title'] as String? ?? '',
+    body: json['body'] as String? ?? '',
+  );
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'body': body,
-      };
+  Map<String, dynamic> toJson() => {'id': id, 'title': title, 'body': body};
 }
 
 class SyncService {
-  SyncService({
-    Future<Database> Function()? openDb,
-    Dio? dio,
-  })  : _openDb = openDb ?? openNotesDb,
-        _dio = dio ??
-            Dio(
-              BaseOptions(
-                baseUrl: 'https://jsonplaceholder.typicode.com',
-                connectTimeout: const Duration(seconds: 5),
-                receiveTimeout: const Duration(seconds: 5),
-              ),
-            );
+  SyncService({Future<Database> Function()? openDb, Dio? dio})
+    : _openDb = openDb ?? openNotesDb,
+      _dio =
+          dio ??
+          Dio(
+            BaseOptions(
+              baseUrl: 'https://jsonplaceholder.typicode.com',
+              connectTimeout: const Duration(seconds: 5),
+              receiveTimeout: const Duration(seconds: 5),
+            ),
+          );
 
   final Future<Database> Function() _openDb;
   final Dio _dio;
@@ -91,15 +84,11 @@ class SyncService {
       await txn.delete('cached_posts');
       final now = DateTime.now().toIso8601String();
       for (final post in posts) {
-        await txn.insert(
-          'cached_posts',
-          {
-            'id': post.id,
-            'payload': jsonEncode(post.toJson()),
-            'cached_at': now,
-          },
-          conflictAlgorithm: ConflictAlgorithm.replace,
-        );
+        await txn.insert('cached_posts', {
+          'id': post.id,
+          'payload': jsonEncode(post.toJson()),
+          'cached_at': now,
+        }, conflictAlgorithm: ConflictAlgorithm.replace);
       }
     });
 

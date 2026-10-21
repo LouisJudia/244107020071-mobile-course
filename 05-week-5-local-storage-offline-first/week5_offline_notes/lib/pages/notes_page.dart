@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../data/local/note.dart';
 import '../data/repositories/note_repository.dart';
 import '../data/sync.dart';
@@ -19,11 +20,13 @@ class ForceOfflineNotifier extends Notifier<bool> {
   void setOffline(bool value) => state = value;
 }
 
-final forceOfflineProvider =
-    NotifierProvider<ForceOfflineNotifier, bool>(ForceOfflineNotifier.new);
+final forceOfflineProvider = NotifierProvider<ForceOfflineNotifier, bool>(
+  ForceOfflineNotifier.new,
+);
 
-final notesProvider =
-    AsyncNotifierProvider<NotesNotifier, List<Note>>(NotesNotifier.new);
+final notesProvider = AsyncNotifierProvider<NotesNotifier, List<Note>>(
+  NotesNotifier.new,
+);
 
 class NotesNotifier extends AsyncNotifier<List<Note>> {
   @override
@@ -63,8 +66,9 @@ final dirtyCountProvider = FutureProvider<int>((ref) async {
   return repo.countDirty();
 });
 
-final syncStateProvider =
-    AsyncNotifierProvider<SyncNotifier, int?>(SyncNotifier.new);
+final syncStateProvider = AsyncNotifierProvider<SyncNotifier, int?>(
+  SyncNotifier.new,
+);
 
 class SyncNotifier extends AsyncNotifier<int?> {
   @override
@@ -73,7 +77,9 @@ class SyncNotifier extends AsyncNotifier<int?> {
   Future<int> runSync() async {
     final isOffline = ref.read(forceOfflineProvider);
     if (isOffline) {
-      throw Exception('Mode offline aktif! Matikan mode offline untuk sinkronisasi.');
+      throw Exception(
+        'Mode offline aktif! Matikan mode offline untuk sinkronisasi.',
+      );
     }
 
     state = const AsyncLoading();
@@ -91,8 +97,8 @@ class SyncNotifier extends AsyncNotifier<int?> {
 
 final cachedPostsProvider =
     AsyncNotifierProvider<CachedPostsNotifier, List<Post>>(
-  CachedPostsNotifier.new,
-);
+      CachedPostsNotifier.new,
+    );
 
 class CachedPostsNotifier extends AsyncNotifier<List<Post>> {
   @override
@@ -156,8 +162,9 @@ class _NotesPageState extends ConsumerState<NotesPage>
                   hintText: 'Contoh: Belanja Mingguan',
                   border: OutlineInputBorder(),
                 ),
-                validator: (val) =>
-                    (val == null || val.trim().isEmpty) ? 'Judul wajib diisi' : null,
+                validator: (val) => (val == null || val.trim().isEmpty)
+                    ? 'Judul wajib diisi'
+                    : null,
               ),
               const SizedBox(height: 12),
               TextFormField(
@@ -183,14 +190,15 @@ class _NotesPageState extends ConsumerState<NotesPage>
                 final title = titleController.text.trim();
                 final body = bodyController.text.trim();
                 Navigator.pop(ctx);
-                await ref.read(notesProvider.notifier).addNote(
-                      title: title,
-                      body: body,
-                    );
+                await ref
+                    .read(notesProvider.notifier)
+                    .addNote(title: title, body: body);
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Catatan berhasil disimpan ke SQLite (dirty = 1)'),
+                      content: Text(
+                        'Catatan berhasil disimpan ke SQLite (dirty = 1)',
+                      ),
                       duration: Duration(seconds: 2),
                     ),
                   );
@@ -247,8 +255,9 @@ class _NotesPageState extends ConsumerState<NotesPage>
                 ? null
                 : () async {
                     try {
-                      final count =
-                          await ref.read(syncStateProvider.notifier).runSync();
+                      final count = await ref
+                          .read(syncStateProvider.notifier)
+                          .runSync();
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -266,7 +275,9 @@ class _NotesPageState extends ConsumerState<NotesPage>
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             backgroundColor: Colors.redAccent,
-                            content: Text(e.toString().replaceAll('Exception: ', '')),
+                            content: Text(
+                              e.toString().replaceAll('Exception: ', ''),
+                            ),
                           ),
                         );
                       }
@@ -296,7 +307,9 @@ class _NotesPageState extends ConsumerState<NotesPage>
               children: [
                 Icon(
                   isOffline ? Icons.wifi_off : Icons.wifi,
-                  color: isOffline ? Colors.orange.shade800 : Colors.blue.shade700,
+                  color: isOffline
+                      ? Colors.orange.shade800
+                      : Colors.blue.shade700,
                   size: 20,
                 ),
                 const SizedBox(width: 8),
@@ -391,7 +404,8 @@ class _NotesPageState extends ConsumerState<NotesPage>
                                   ),
                                   actions: [
                                     TextButton(
-                                      onPressed: () => Navigator.pop(ctx, false),
+                                      onPressed: () =>
+                                          Navigator.pop(ctx, false),
                                       child: const Text('Batal'),
                                     ),
                                     FilledButton(
@@ -429,8 +443,11 @@ class _NotesPageState extends ConsumerState<NotesPage>
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.error_outline,
-                              color: Colors.redAccent, size: 48),
+                          const Icon(
+                            Icons.error_outline,
+                            color: Colors.redAccent,
+                            size: 48,
+                          ),
                           const SizedBox(height: 8),
                           Text('Gagal membaca SQLite: $err'),
                           const SizedBox(height: 12),
@@ -491,17 +508,19 @@ class _NotesPageState extends ConsumerState<NotesPage>
                             },
                           );
                         },
-                        loading: () => const Center(
-                          child: CircularProgressIndicator(),
-                        ),
+                        loading: () =>
+                            const Center(child: CircularProgressIndicator()),
                         error: (err, _) => Center(
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(Icons.cloud_off,
-                                    size: 48, color: Colors.orange),
+                                const Icon(
+                                  Icons.cloud_off,
+                                  size: 48,
+                                  color: Colors.orange,
+                                ),
                                 const SizedBox(height: 12),
                                 Text(
                                   'Gagal memuat API: $err',

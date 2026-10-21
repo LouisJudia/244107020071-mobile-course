@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../providers/auth_providers.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
@@ -24,10 +25,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   void _submit() async {
     if (_formKey.currentState?.validate() ?? false) {
-      await ref.read(authStateProvider.notifier).login(
-            _emailController.text.trim(),
-            _passwordController.text.trim(),
-          );
+      await ref
+          .read(authStateProvider.notifier)
+          .login(_emailController.text.trim(), _passwordController.text.trim());
     }
   }
 
@@ -74,7 +74,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         Text(
                           'Campus Notify',
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: Theme.of(context).colorScheme.primary,
                               ),
@@ -83,9 +84,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         Text(
                           'Sistem Informasi & Pengumuman Kampus',
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Colors.grey[600],
-                              ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: Colors.grey[600]),
                         ),
                         const SizedBox(height: 32),
                         TextFormField(
@@ -145,7 +145,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           Container(
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.errorContainer,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .errorContainer,
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Row(
@@ -157,9 +159,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 const SizedBox(width: 8),
                                 Expanded(
                                   child: Text(
-                                    '${authState.error}'.replaceFirst('Exception: ', ''),
+                                    '${authState.error}'.replaceFirst(
+                                      'Exception: ',
+                                      '',
+                                    ),
                                     style: TextStyle(
-                                      color: Theme.of(context).colorScheme.onErrorContainer,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onErrorContainer,
                                     ),
                                   ),
                                 ),
@@ -188,16 +195,18 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 )
                               : const Text(
                                   'Masuk',
-                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                         ),
                         const SizedBox(height: 16),
                         Text(
                           'Gunakan akun demo kampus untuk masuk.\nKata sandi minimal 6 digit.',
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Colors.grey[500],
-                              ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: Colors.grey[500]),
                         ),
                       ],
                     ),

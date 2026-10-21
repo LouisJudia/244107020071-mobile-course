@@ -60,7 +60,8 @@ class _HomePageState extends ConsumerState<HomePage> {
       if (mounted) {
         setState(() {
           _isLoadingApi = false;
-          _apiStatus = 'Respon: ${e.toString().replaceFirst("Exception: ", "")}';
+          _apiStatus =
+              'Respon: ${e.toString().replaceFirst("Exception: ", "")}';
         });
         ref.invalidate(savedSessionProvider);
       }
@@ -128,9 +129,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                             ),
                             Text(
                               userEmail,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -147,9 +147,8 @@ class _HomePageState extends ConsumerState<HomePage> {
               // Section: OWASP Security & Token Status
               Text(
                 'Status Keamanan & Token (OWASP)',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: Theme.of(context).textTheme.titleMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
 
@@ -186,7 +185,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                         const SizedBox(height: 8),
                         Text(
                           _fcmStatus,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
                                 color: Colors.green[700],
                                 fontStyle: FontStyle.italic,
                               ),
@@ -209,16 +209,14 @@ class _HomePageState extends ConsumerState<HomePage> {
                     children: [
                       Text(
                         'Uji Coba Auto Refresh Token (Dio Interceptor 401)',
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style: Theme.of(context).textTheme.titleSmall
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         'Mengirim request ke endpoint protected. Jika 401 Unauthorized, interceptor otomatis memperbarui token dan melakukan retry.',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.grey[600],
-                            ),
+                        style: Theme.of(context).textTheme.bodySmall
+                            ?.copyWith(color: Colors.grey[600]),
                       ),
                       const SizedBox(height: 12),
                       FilledButton.tonalIcon(
@@ -228,10 +226,16 @@ class _HomePageState extends ConsumerState<HomePage> {
                             ? const SizedBox(
                                 width: 18,
                                 height: 18,
-                                child: CircularProgressIndicator(strokeWidth: 2),
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
                               )
                             : const Icon(Icons.send),
-                        label: Text(_isLoadingApi ? 'Memproses...' : 'Kirim Protected Request'),
+                        label: Text(
+                          _isLoadingApi
+                              ? 'Memproses...'
+                              : 'Kirim Protected Request',
+                        ),
                       ),
                       if (_apiStatus.isNotEmpty) ...[
                         const SizedBox(height: 12),
@@ -273,16 +277,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                 children: [
                   Text(
                     'Pengumuman Terkini',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                    style: Theme.of(context).textTheme.titleMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   Text(
                     '#pengumuman-kampus',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
@@ -330,7 +333,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                       padding: const EdgeInsets.symmetric(
@@ -338,7 +342,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                                         vertical: 4,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: _getCategoryColor(context, item.category),
+                                        color: _getCategoryColor(
+                                          context,
+                                          item.category,
+                                        ),
                                         borderRadius: BorderRadius.circular(6),
                                       ),
                                       child: Text(
@@ -346,15 +353,19 @@ class _HomePageState extends ConsumerState<HomePage> {
                                         style: TextStyle(
                                           fontSize: 11,
                                           fontWeight: FontWeight.bold,
-                                          color: _getCategoryTextColor(context, item.category),
+                                          color: _getCategoryTextColor(
+                                            context,
+                                            item.category,
+                                          ),
                                         ),
                                       ),
                                     ),
                                     Text(
                                       item.date,
-                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                            color: Colors.grey[600],
-                                          ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(color: Colors.grey[600]),
                                     ),
                                   ],
                                 ),
@@ -371,9 +382,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                                   item.content,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                        color: Colors.grey[700],
-                                      ),
+                                  style: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(color: Colors.grey[700]),
                                 ),
                                 const SizedBox(height: 8),
                                 Row(
@@ -383,14 +393,18 @@ class _HomePageState extends ConsumerState<HomePage> {
                                       'Baca selengkapnya',
                                       style: TextStyle(
                                         fontSize: 12,
-                                        color: Theme.of(context).colorScheme.primary,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     Icon(
                                       Icons.chevron_right,
                                       size: 16,
-                                      color: Theme.of(context).colorScheme.primary,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary,
                                     ),
                                   ],
                                 ),
@@ -433,9 +447,8 @@ class _HomePageState extends ConsumerState<HomePage> {
               children: [
                 Text(
                   label,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey[600],
-                      ),
+                  style: Theme.of(context).textTheme.bodySmall
+                      ?.copyWith(color: Colors.grey[600]),
                 ),
                 Text(
                   maskedValue,

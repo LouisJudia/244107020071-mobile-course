@@ -31,7 +31,8 @@ class MockSyncService extends SyncService {
   MockSyncService() : super(openDb: () => throw UnimplementedError());
 
   @override
-  Future<List<Post>> loadPostsCacheFirst({bool forceOffline = false}) async => [];
+  Future<List<Post>> loadPostsCacheFirst({bool forceOffline = false}) async =>
+      [];
 
   @override
   Future<List<Post>> readCachedPosts() async => [];

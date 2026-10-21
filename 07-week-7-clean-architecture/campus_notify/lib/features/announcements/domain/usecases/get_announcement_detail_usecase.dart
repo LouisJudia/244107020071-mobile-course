@@ -11,7 +11,9 @@ class GetAnnouncementDetailUseCase {
     if (id.trim().isEmpty) {
       return Future.value((
         announcement: null,
-        failure: const ValidationFailure('ID pengumuman tidak valid atau kosong'),
+        failure: const ValidationFailure(
+          'ID pengumuman tidak valid atau kosong',
+        ),
       ));
     }
     return _repository.getAnnouncementById(id.trim());

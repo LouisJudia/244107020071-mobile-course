@@ -6,12 +6,14 @@ import '../datasources/announcement_remote_data_source.dart';
 /// Implementasi konkrit dari kontrak AnnouncementRepository di Data Layer
 class AnnouncementRepositoryImpl implements AnnouncementRepository {
   AnnouncementRepositoryImpl({AnnouncementRemoteDataSource? remoteDataSource})
-      : _remoteDataSource = remoteDataSource ?? AnnouncementRemoteDataSourceImpl();
+    : _remoteDataSource =
+          remoteDataSource ?? AnnouncementRemoteDataSourceImpl();
 
   final AnnouncementRemoteDataSource _remoteDataSource;
 
   @override
-  Future<({List<Announcement> announcements, Failure? failure})> getAnnouncements() async {
+  Future<({List<Announcement> announcements, Failure? failure})>
+  getAnnouncements() async {
     try {
       final models = await _remoteDataSource.fetchAnnouncements();
       final entities = models.map((m) => m.toEntity()).toList();
@@ -36,10 +38,7 @@ class AnnouncementRepositoryImpl implements AnnouncementRepository {
           failure: const LocalFailure('Pengumuman tidak ditemukan.'),
         );
       }
-      return (
-        announcement: model.toEntity(),
-        failure: null,
-      );
+      return (announcement: model.toEntity(), failure: null);
     } catch (e) {
       return (
         announcement: null,

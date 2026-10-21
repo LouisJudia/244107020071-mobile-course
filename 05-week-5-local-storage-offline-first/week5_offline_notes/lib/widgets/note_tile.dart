@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
+
 import '../data/local/note.dart';
 
 class NoteTile extends StatelessWidget {
-  const NoteTile({
-    super.key,
-    required this.note,
-    this.onTap,
-    this.onDelete,
-  });
+  const NoteTile({super.key, required this.note, this.onTap, this.onDelete});
 
   final Note note;
   final VoidCallback? onTap;
@@ -123,7 +119,9 @@ class NoteTile extends StatelessWidget {
                 Text(
                   note.body,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.8),
+                    color: theme.textTheme.bodyMedium?.color?.withValues(
+                      alpha: 0.8,
+                    ),
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -141,15 +139,16 @@ class NoteTile extends StatelessWidget {
                         color: theme.textTheme.bodySmall?.color,
                       ),
                       const SizedBox(width: 4),
-                      Text(
-                        timeStr,
-                        style: theme.textTheme.bodySmall,
-                      ),
+                      Text(timeStr, style: theme.textTheme.bodySmall),
                     ],
                   ),
                   if (onDelete != null)
                     IconButton(
-                      icon: const Icon(Icons.delete_outline, color: Colors.redAccent, size: 20),
+                      icon: const Icon(
+                        Icons.delete_outline,
+                        color: Colors.redAccent,
+                        size: 20,
+                      ),
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),
                       tooltip: 'Hapus Catatan',

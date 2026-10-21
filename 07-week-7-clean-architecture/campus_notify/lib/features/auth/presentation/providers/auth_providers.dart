@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../data/datasources/token_store.dart';
 import '../../data/repositories/auth_repository_impl.dart';
 import '../../domain/entities/auth_session.dart';
@@ -35,7 +36,9 @@ final checkAuthStatusUseCaseProvider = Provider<CheckAuthStatusUseCase>((ref) {
 });
 
 // --- PRESENTATION LAYER STATE (UI State & Notifiers) ---
-final authStateProvider = AsyncNotifierProvider<AuthNotifier, bool>(AuthNotifier.new);
+final authStateProvider = AsyncNotifierProvider<AuthNotifier, bool>(
+  AuthNotifier.new,
+);
 
 class AuthNotifier extends AsyncNotifier<bool> {
   @override
@@ -51,7 +54,10 @@ class AuthNotifier extends AsyncNotifier<bool> {
     final result = await loginUseCase(email: email, password: password);
 
     if (result.failure != null) {
-      state = AsyncError(Exception(result.failure!.message), StackTrace.current);
+      state = AsyncError(
+        Exception(result.failure!.message),
+        StackTrace.current,
+      );
     } else {
       state = const AsyncData(true);
       ref.invalidate(savedSessionProvider);
