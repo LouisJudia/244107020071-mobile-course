@@ -33,3 +33,11 @@ jobs:
           dart format --set-exit-if-changed .
           flutter analyze
           flutter test test/note_test.dart test/validate_note_test.dart
+
+      - name: Verify Week 9 AI-Assisted Development (week9_notes_app)
+        working-directory: ./09-week-9-ai-assisted-development/week9_notes_app
+        run: |
+          flutter pub get
+          dart format --set-exit-if-changed .
+          flutter analyze
+          flutter test test/search_filter_test.dart test/note_test.dart test/validate_note_test.dart
