@@ -1,28 +1,5 @@
 # 📝 AI Development Log: Fitur Search Notes & Empty State
 
-**Mahasiswa:** Louis Judia  
-**NIM:** 244107020071  
-**Kelas:** TI-3F / Semester 5  
-**Mata Kuliah:** Pemrograman Mobile (Praktikum)  
-**Modul:** Minggu 09 – AI-Assisted Development / Vibe Coding  
-**Proyek:** Offline-First Notes App (`week9_notes_app`)  
-
----
-
-## 📑 Daftar Isi
-1. [Siklus Alur Kerja AI-Assisted Development](#1-siklus-alur-kerja-ai-assisted-development)
-2. [Prompt 5 Slot & Konteks Proyek](#2-prompt-5-slot--konteks-proyek)
-3. [Output Mentah AI (Initial AI Generation)](#3-output-mentah-ai-initial-ai-generation)
-4. [Tiga Pola Kelemahan / Halusinasi AI yang Ditemukan](#4-tiga-pola-kelemahan--halusinasi-ai-yang-ditemukan)
-5. [Verifikasi 6 Langkah](#5-verifikasi-6-langkah)
-6. [Debugging dengan Test Merah (Red Test)](#6-debugging-dengan-test-merah-red-test)
-7. [Refactoring ke Clean Architecture](#7-refactoring-ke-clean-architecture)
-8. [Tabel Keputusan: Terima vs Tolak](#8-tabel-keputusan-terima-vs-tolak)
-9. [Bukti Tiga Mesin (Format, Analyze, Test)](#9-bukti-tiga-mesin-format-analyze-test)
-10. [Refleksi Pembelajaran](#10-refleksi-pembelajaran)
-
----
-
 ## 1. Siklus Alur Kerja AI-Assisted Development
 
 Penerapan AI pada modul ini berpegang teguh pada prinsip: **"AI Mengusulkan, Developer Memutuskan"**. Jika developer menerima kode AI mentah-mentah tanpa verifikasi (*vibe coding*), proyek akan cepat di awal namun sangat mahal dan rapuh di akhir.

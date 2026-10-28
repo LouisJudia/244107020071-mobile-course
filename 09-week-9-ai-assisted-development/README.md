@@ -1,28 +1,5 @@
 # 🚀 Laporan Praktikum Minggu 09: AI-Assisted Development / Vibe Coding
 
-**Mahasiswa:** Louis Judia  
-**NIM:** 244107020071  
-**Kelas:** TI-3F / Semester 5  
-**Mata Kuliah:** Pemrograman Mobile (Praktikum)  
-**Jurusan / Prodi:** Jurusan Teknologi Informasi / D4 Teknik Informatika  
-**Institusi:** Politeknik Negeri Malang  
-**Repository:** [LouisJudia/244107020071-mobile-course](https://github.com/LouisJudia/244107020071-mobile-course)  
-
----
-
-## 📑 Daftar Isi
-1. [🎯 Tujuan Praktikum](#-tujuan-praktikum)
-2. [💡 Konsep & Workflow AI-Assisted Development](#-konsep--workflow-ai-assisted-development)
-3. [🛠️ Stack Teknologi & Arsitektur](#️-stack-teknologi--arsitektur)
-4. [🌟 Fitur Baru: Pencarian Judul Catatan & Empty State](#-fitur-baru-pencarian-judul-catatan--empty-state)
-5. [🤖 Prompt 5 Slot & Proses Audit Kode AI](#-prompt-5-slot--proses-audit-kode-ai)
-6. [🧪 Bukti Verifikasi Tiga Mesin (Format, Analyze, Test)](#-bukti-verifikasi-tiga-mesin-format-analyze-test)
-7. [📸 Galeri Screenshot Aplikasi](#-galeri-screenshot-aplikasi)
-8. [🚀 Panduan Menjalankan Proyek](#-panduan-menjalankan-proyek)
-9. [📑 Berkas Dokumentasi Terkait](#-berkas-dokumentasi-terkait)
-
----
-
 ## 🎯 Tujuan Praktikum
 Setelah menyelesaikan modul Minggu 09 ini, mahasiswa mampu:
 1. **Menjelaskan Workflow AI-Assisted Development:** Menerapkan siklus terstruktur (*Prompt -> Generate -> Verify -> Test -> Refactor -> Explain*).

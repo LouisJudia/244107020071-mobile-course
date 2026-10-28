@@ -1,13 +1,5 @@
 # 🔍 AI Review Challenge & Tabel Usulan vs Keputusan
 
-**Mahasiswa:** Louis Judia  
-**NIM:** 244107020071  
-**Kelas:** TI-3F / Semester 5  
-**Modul:** Minggu 09 – AI-Assisted Development / Vibe Coding  
-**Proyek:** Fitur Pencarian & Filter Catatan (`week9_notes_app`)  
-
----
-
 ## 1. AI Review Prompt Challenge
 
 Berikut adalah prompt pengujian review yang diajukan ke AI Coding Assistant sebagai simulasi *Senior Developer Code Review*:
