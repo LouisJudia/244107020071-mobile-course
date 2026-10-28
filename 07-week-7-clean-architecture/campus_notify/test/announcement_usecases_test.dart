@@ -7,16 +7,14 @@ import 'package:campus_notify/features/announcements/domain/usecases/get_announc
 
 /// Fake repository pengumuman murni tanpa koneksi internet atau SQLite sungguhan
 class FakeAnnouncementRepository implements AnnouncementRepository {
-  FakeAnnouncementRepository({
-    this.items = const [],
-    this.fail = false,
-  });
+  FakeAnnouncementRepository({this.items = const [], this.fail = false});
 
   final List<Announcement> items;
   final bool fail;
 
   @override
-  Future<({List<Announcement> announcements, Failure? failure})> getAnnouncements() async {
+  Future<({List<Announcement> announcements, Failure? failure})>
+  getAnnouncements() async {
     if (fail) {
       return (
         announcements: const <Announcement>[],
@@ -49,47 +47,53 @@ class FakeAnnouncementRepository implements AnnouncementRepository {
 
 void main() {
   group('GetAnnouncementsUseCase Unit Tests', () {
-    test('GetAnnouncements meneruskan daftar pengumuman dari repository', () async {
-      final repo = FakeAnnouncementRepository(
-        items: [
-          const Announcement(
-            id: '101',
-            title: 'Jadwal UTS',
-            date: '07 Okt 2024',
-            category: 'Akademik',
-            content: 'Ujian Tengah Semester',
-            author: 'Biro Akademik',
-          ),
-          const Announcement(
-            id: '102',
-            title: 'Beasiswa Prestasi',
-            date: '05 Okt 2024',
-            category: 'Beasiswa',
-            content: 'Pendaftaran beasiswa',
-            author: 'Kemahasiswaan',
-          ),
-        ],
-      );
+    test(
+      'GetAnnouncements meneruskan daftar pengumuman dari repository',
+      () async {
+        final repo = FakeAnnouncementRepository(
+          items: [
+            const Announcement(
+              id: '101',
+              title: 'Jadwal UTS',
+              date: '07 Okt 2024',
+              category: 'Akademik',
+              content: 'Ujian Tengah Semester',
+              author: 'Biro Akademik',
+            ),
+            const Announcement(
+              id: '102',
+              title: 'Beasiswa Prestasi',
+              date: '05 Okt 2024',
+              category: 'Beasiswa',
+              content: 'Pendaftaran beasiswa',
+              author: 'Kemahasiswaan',
+            ),
+          ],
+        );
 
-      final useCase = GetAnnouncementsUseCase(repo);
-      final result = await useCase();
+        final useCase = GetAnnouncementsUseCase(repo);
+        final result = await useCase();
 
-      expect(result.failure, isNull);
-      expect(result.announcements.length, 2);
-      expect(result.announcements.first.title, 'Jadwal UTS');
-      expect(result.announcements.last.category, 'Beasiswa');
-    });
+        expect(result.failure, isNull);
+        expect(result.announcements.length, 2);
+        expect(result.announcements.first.title, 'Jadwal UTS');
+        expect(result.announcements.last.category, 'Beasiswa');
+      },
+    );
 
-    test('GetAnnouncements meneruskan failure tanpa melempar exception crash', () async {
-      final repo = FakeAnnouncementRepository(fail: true);
-      final useCase = GetAnnouncementsUseCase(repo);
+    test(
+      'GetAnnouncements meneruskan failure tanpa melempar exception crash',
+      () async {
+        final repo = FakeAnnouncementRepository(fail: true);
+        final useCase = GetAnnouncementsUseCase(repo);
 
-      final result = await useCase();
+        final result = await useCase();
 
-      expect(result.failure, isA<NetworkFailure>());
-      expect(result.failure?.message, contains('Koneksi timeout'));
-      expect(result.announcements, isEmpty);
-    });
+        expect(result.failure, isA<NetworkFailure>());
+        expect(result.failure?.message, contains('Koneksi timeout'));
+        expect(result.announcements, isEmpty);
+      },
+    );
   });
 
   group('GetAnnouncementDetailUseCase Unit Tests', () {
@@ -116,25 +120,31 @@ void main() {
       expect(result.announcement?.title, 'Jadwal UTS');
     });
 
-    test('GetAnnouncementDetail mengembalikan failure saat ID kosong', () async {
-      final repo = FakeAnnouncementRepository();
-      final useCase = GetAnnouncementDetailUseCase(repo);
+    test(
+      'GetAnnouncementDetail mengembalikan failure saat ID kosong',
+      () async {
+        final repo = FakeAnnouncementRepository();
+        final useCase = GetAnnouncementDetailUseCase(repo);
 
-      final result = await useCase('');
+        final result = await useCase('');
 
-      expect(result.announcement, isNull);
-      expect(result.failure, isA<ValidationFailure>());
-    });
+        expect(result.announcement, isNull);
+        expect(result.failure, isA<ValidationFailure>());
+      },
+    );
 
-    test('GetAnnouncementDetail mengembalikan failure saat ID tidak ada', () async {
-      final repo = FakeAnnouncementRepository(items: []);
-      final useCase = GetAnnouncementDetailUseCase(repo);
+    test(
+      'GetAnnouncementDetail mengembalikan failure saat ID tidak ada',
+      () async {
+        final repo = FakeAnnouncementRepository(items: []);
+        final useCase = GetAnnouncementDetailUseCase(repo);
 
-      final result = await useCase('999');
+        final result = await useCase('999');
 
-      expect(result.announcement, isNull);
-      expect(result.failure, isA<LocalFailure>());
-      expect(result.failure?.message, contains('tidak ditemukan'));
-    });
+        expect(result.announcement, isNull);
+        expect(result.failure, isA<LocalFailure>());
+        expect(result.failure?.message, contains('tidak ditemukan'));
+      },
+    );
   });
 }

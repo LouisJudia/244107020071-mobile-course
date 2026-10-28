@@ -3,12 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:campus_notify/main.dart';
 
 void main() {
-  testWidgets('CampusNotifyApp loads login page smoke test', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      const ProviderScope(
-        child: CampusNotifyApp(),
-      ),
-    );
+  testWidgets('CampusNotifyApp loads login page smoke test', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const ProviderScope(child: CampusNotifyApp()));
 
     expect(find.text('Campus Notify'), findsOneWidget);
   });

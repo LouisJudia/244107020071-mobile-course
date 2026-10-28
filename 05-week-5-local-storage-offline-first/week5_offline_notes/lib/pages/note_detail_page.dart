@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../data/local/note.dart';
 import '../pages/notes_page.dart';
 
-final noteDetailProvider =
-    FutureProvider.family<Note?, int>((ref, noteId) async {
+final noteDetailProvider = FutureProvider.family<Note?, int>((
+  ref,
+  noteId,
+) async {
   final repo = ref.watch(noteRepositoryProvider);
   return repo.getNoteById(noteId);
 });
@@ -79,9 +82,8 @@ class NoteDetailPage extends ConsumerWidget {
                     Expanded(
                       child: Text(
                         note.title,
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style: Theme.of(context).textTheme.headlineSmall
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -140,9 +142,9 @@ class NoteDetailPage extends ConsumerWidget {
                 Text(
                   note.body.isEmpty ? '(Tidak ada isi konten)' : note.body,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        height: 1.6,
-                        color: note.body.isEmpty ? Colors.grey : null,
-                      ),
+                    height: 1.6,
+                    color: note.body.isEmpty ? Colors.grey : null,
+                  ),
                 ),
               ],
             ),

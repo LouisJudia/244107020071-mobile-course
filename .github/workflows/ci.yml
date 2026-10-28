@@ -1,0 +1,35 @@
+name: ci
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Verify Week 7 Clean Architecture (campus_notify)
+        working-directory: ./07-week-7-clean-architecture/campus_notify
+        run: |
+          flutter pub get
+          dart format --set-exit-if-changed .
+          flutter analyze
+          flutter test
+
+      - name: Verify Week 5 Offline Notes (week5_offline_notes)
+        working-directory: ./05-week-5-local-storage-offline-first/week5_offline_notes
+        run: |
+          flutter pub get
+          dart format --set-exit-if-changed .
+          flutter analyze
+          flutter test test/note_test.dart test/validate_note_test.dart

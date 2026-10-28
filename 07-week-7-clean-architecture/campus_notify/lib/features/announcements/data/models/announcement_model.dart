@@ -24,20 +24,20 @@ class AnnouncementModel extends Announcement {
   }
 
   Map<String, dynamic> toMap() => {
-        'id': id,
-        'title': title,
-        'date': date,
-        'category': category,
-        'content': content,
-        'author': author,
-      };
+    'id': id,
+    'title': title,
+    'date': date,
+    'category': category,
+    'content': content,
+    'author': author,
+  };
 
   Announcement toEntity() => Announcement(
-        id: id,
-        title: title,
-        date: date,
-        category: category,
-        content: content,
-        author: author,
-      );
+    id: id,
+    title: title,
+    date: date,
+    category: category,
+    content: content,
+    author: author,
+  );
 }

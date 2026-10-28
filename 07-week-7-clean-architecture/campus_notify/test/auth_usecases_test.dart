@@ -66,34 +66,40 @@ class FakeAuthRepository implements AuthRepository {
 
 void main() {
   group('LoginUseCase Unit Tests', () {
-    test('Login berhasil saat email valid dan password >= 6 karakter', () async {
-      final repo = FakeAuthRepository();
-      final useCase = LoginUseCase(repo);
+    test(
+      'Login berhasil saat email valid dan password >= 6 karakter',
+      () async {
+        final repo = FakeAuthRepository();
+        final useCase = LoginUseCase(repo);
 
-      final result = await useCase(
-        email: 'mahasiswa@polinema.ac.id',
-        password: 'password123',
-      );
+        final result = await useCase(
+          email: 'mahasiswa@polinema.ac.id',
+          password: 'password123',
+        );
 
-      expect(result.failure, isNull);
-      expect(result.session, isNotNull);
-      expect(result.session?.access, contains('fake-access'));
-      expect(result.session?.email, 'mahasiswa@polinema.ac.id');
-    });
+        expect(result.failure, isNull);
+        expect(result.session, isNotNull);
+        expect(result.session?.access, contains('fake-access'));
+        expect(result.session?.email, 'mahasiswa@polinema.ac.id');
+      },
+    );
 
-    test('Login gagal validasi saat format email tidak valid (tanpa @)', () async {
-      final repo = FakeAuthRepository();
-      final useCase = LoginUseCase(repo);
+    test(
+      'Login gagal validasi saat format email tidak valid (tanpa @)',
+      () async {
+        final repo = FakeAuthRepository();
+        final useCase = LoginUseCase(repo);
 
-      final result = await useCase(
-        email: 'bukanemail',
-        password: 'password123',
-      );
+        final result = await useCase(
+          email: 'bukanemail',
+          password: 'password123',
+        );
 
-      expect(result.session, isNull);
-      expect(result.failure, isA<ValidationFailure>());
-      expect(result.failure?.message, contains('Format email tidak valid'));
-    });
+        expect(result.session, isNull);
+        expect(result.failure, isA<ValidationFailure>());
+        expect(result.failure?.message, contains('Format email tidak valid'));
+      },
+    );
 
     test('Login gagal validasi saat password kurang dari 6 karakter', () async {
       final repo = FakeAuthRepository();
@@ -106,22 +112,28 @@ void main() {
 
       expect(result.session, isNull);
       expect(result.failure, isA<ValidationFailure>());
-      expect(result.failure?.message, contains('Kata sandi minimal harus 6 karakter'));
-    });
-
-    test('Login meneruskan AuthFailure dari repository saat autentikasi ditolak', () async {
-      final repo = FakeAuthRepository(shouldFail: true);
-      final useCase = LoginUseCase(repo);
-
-      final result = await useCase(
-        email: 'mahasiswa@polinema.ac.id',
-        password: 'password123',
+      expect(
+        result.failure?.message,
+        contains('Kata sandi minimal harus 6 karakter'),
       );
-
-      expect(result.session, isNull);
-      expect(result.failure, isA<AuthFailure>());
-      expect(result.failure?.message, 'Kredensial salah (simulasi)');
     });
+
+    test(
+      'Login meneruskan AuthFailure dari repository saat autentikasi ditolak',
+      () async {
+        final repo = FakeAuthRepository(shouldFail: true);
+        final useCase = LoginUseCase(repo);
+
+        final result = await useCase(
+          email: 'mahasiswa@polinema.ac.id',
+          password: 'password123',
+        );
+
+        expect(result.session, isNull);
+        expect(result.failure, isA<AuthFailure>());
+        expect(result.failure?.message, 'Kredensial salah (simulasi)');
+      },
+    );
   });
 
   group('Logout & CheckAuthStatusUseCase Unit Tests', () {
@@ -139,27 +151,33 @@ void main() {
       expect(repo.session, isNull);
     });
 
-    test('CheckAuthStatusUseCase mendeteksi user aktif dari token tersimpan', () async {
-      final repo = FakeAuthRepository(
-        session: const AuthSession(
-          access: 'active-access',
-          refresh: 'active-refresh',
-        ),
-      );
-      final useCase = CheckAuthStatusUseCase(repo);
+    test(
+      'CheckAuthStatusUseCase mendeteksi user aktif dari token tersimpan',
+      () async {
+        final repo = FakeAuthRepository(
+          session: const AuthSession(
+            access: 'active-access',
+            refresh: 'active-refresh',
+          ),
+        );
+        final useCase = CheckAuthStatusUseCase(repo);
 
-      final result = await useCase();
-      expect(result.isAuthenticated, isTrue);
-      expect(result.session?.access, 'active-access');
-    });
+        final result = await useCase();
+        expect(result.isAuthenticated, isTrue);
+        expect(result.session?.access, 'active-access');
+      },
+    );
 
-    test('CheckAuthStatusUseCase mengembalikan false saat belum ada sesi', () async {
-      final repo = FakeAuthRepository(session: null);
-      final useCase = CheckAuthStatusUseCase(repo);
+    test(
+      'CheckAuthStatusUseCase mengembalikan false saat belum ada sesi',
+      () async {
+        final repo = FakeAuthRepository(session: null);
+        final useCase = CheckAuthStatusUseCase(repo);
 
-      final result = await useCase();
-      expect(result.isAuthenticated, isFalse);
-      expect(result.session, isNull);
-    });
+        final result = await useCase();
+        expect(result.isAuthenticated, isFalse);
+        expect(result.session, isNull);
+      },
+    );
   });
 }

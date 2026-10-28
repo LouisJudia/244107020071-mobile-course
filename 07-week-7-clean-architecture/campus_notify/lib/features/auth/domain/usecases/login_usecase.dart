@@ -25,7 +25,9 @@ class LoginUseCase {
     if (!cleanEmail.contains('@')) {
       return (
         session: null,
-        failure: const ValidationFailure('Format email tidak valid (harus mengandung @)'),
+        failure: const ValidationFailure(
+          'Format email tidak valid (harus mengandung @)',
+        ),
       );
     }
 
