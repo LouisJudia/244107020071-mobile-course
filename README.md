@@ -19,6 +19,7 @@
 | **06** | Authentication, Security & Push Notifications (FCM) | [`06-week-6-authentication-security-fcm`](06-week-6-authentication-security-fcm/) | ✅ Selesai |
 | **07** | Clean Architecture & Dependency Rule Refactoring | [`07-week-7-clean-architecture`](07-week-7-clean-architecture/) | ✅ Selesai |
 | **08** | Mid Project Review & Peer Code Review | [`08-week-8-mid-project-review`](08-week-8-mid-project-review/) | ✅ Selesai |
+| **09** | AI-Assisted Development / Vibe Coding (Search & Clean Architecture) | [`09-week-9-ai-assisted-development`](09-week-9-ai-assisted-development/) | ✅ Selesai |
 
 ---
 
