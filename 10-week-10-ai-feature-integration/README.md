@@ -1,28 +1,5 @@
 # 🚀 Laporan Praktikum Minggu 10: AI Feature Integration (Integrasi Fitur AI)
 
-**Mahasiswa:** Louis Judia  
-**NIM:** 244107020071  
-**Kelas:** TI-3F / Semester 5  
-**Mata Kuliah:** Pemrograman Mobile (Praktikum)  
-**Jurusan / Prodi:** Jurusan Teknologi Informasi / D4 Teknik Informatika  
-**Institusi:** Politeknik Negeri Malang  
-**Repository:** [LouisJudia/244107020071-mobile-course](https://github.com/LouisJudia/244107020071-mobile-course)  
-
----
-
-## 📑 Daftar Isi
-1. [🎯 Tujuan Praktikum](#-tujuan-praktikum)
-2. [💡 Konsep & Arsitektur Integrasi Fitur AI](#-konsep--arsitektur-integrasi-fitur-ai)
-3. [🌟 Fitur yang Diintegrasikan: SobatKampus AI Assistant](#-fitur-yang-diintegrasikan-sobatkampus-ai-assistant)
-4. [🛡️ Tabel Risiko & Mitigasi (Privasi, Biaya, Error, dan Fallback)](#️-tabel-risiko--mitigasi-privasi-biaya-error-dan-fallback)
-5. [🤖 Prompt Design untuk Mobile](#-prompt-design-untuk-mobile)
-6. [🧪 Bukti Verifikasi Tiga Mesin (Format, Analyze, Test)](#-bukti-verifikasi-tiga-mesin-format-analyze-test)
-7. [📸 Galeri Screenshot Aplikasi](#-galeri-screenshot-aplikasi)
-8. [💭 Refleksi Praktikum](#-refleksi-praktikum)
-9. [🚀 Panduan Menjalankan Proyek](#-panduan-menjalankan-proyek)
-
----
-
 ## 🎯 Tujuan Praktikum
 Setelah menyelesaikan modul Minggu 10 ini, mahasiswa mampu:
 1. Memahami konsep integrasi LLM API (Google Gemini 1.5 Flash) ke dalam aplikasi mobile Flutter.

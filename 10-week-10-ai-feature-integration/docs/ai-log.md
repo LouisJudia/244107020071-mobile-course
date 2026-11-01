@@ -218,3 +218,4 @@ Total 49 tes lulus verifikasi secara otomatis, mencakup seluruh use case, reposi
    - Disediakan *Local Rule-Based Knowledge Engine* (`getLocalFallback`) yang menyimpan basis data informasi akademik esensial Polinema (jadwal, KRS, beasiswa, perpustakaan). Jika API offline, kuota habis, atau terjadi error jaringan, sistem beralih otomatis ke respon lokal dengan label transparan `Respon Fallback Lokal`.
 4. **Satu hal yang Anda pelajari tentang UX fitur AI di mobile?**
    - Fitur AI di mobile sangat membutuhkan umpan balik visual yang cepat (*feedback loop*). Karena latensi LLM cloud bisa mencapai 1-3 detik, implementasi *typing indicator* animasi dan *streaming text chunks* (efek kata demi kata) memberikan kesan percakapan yang hidup dan mencegah pengguna menganggap aplikasi sedang macet (*freeze*). Selain itu, tombol *quick prompt chips* mempermudah pengetikan di layar sentuh mobile.
+
