@@ -41,3 +41,11 @@ jobs:
           dart format --set-exit-if-changed .
           flutter analyze
           flutter test test/search_filter_test.dart test/note_test.dart test/validate_note_test.dart
+
+      - name: Verify Week 10 AI Feature Integration (10-week-10-ai-feature-integration)
+        working-directory: ./10-week-10-ai-feature-integration
+        run: |
+          flutter pub get
+          dart format --set-exit-if-changed .
+          flutter analyze
+          flutter test test/ai_service_test.dart test/chat_screen_widget_test.dart test/announcement_usecases_test.dart test/auth_usecases_test.dart test/auth_push_test.dart test/formatters_test.dart

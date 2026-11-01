@@ -20,6 +20,7 @@
 | **07** | Clean Architecture & Dependency Rule Refactoring | [`07-week-7-clean-architecture`](07-week-7-clean-architecture/) | ✅ Selesai |
 | **08** | Mid Project Review & Peer Code Review | [`08-week-8-mid-project-review`](08-week-8-mid-project-review/) | ✅ Selesai |
 | **09** | AI-Assisted Development / Vibe Coding (Search & Clean Architecture) | [`09-week-9-ai-assisted-development`](09-week-9-ai-assisted-development/) | ✅ Selesai |
+| **10** | AI Feature Integration (SobatKampus AI, Gemini API, Privacy & Fallback) | [`10-week-10-ai-feature-integration`](10-week-10-ai-feature-integration/) | ✅ Selesai |
 
 ---
 
