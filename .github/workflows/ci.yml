@@ -49,3 +49,12 @@ jobs:
           dart format --set-exit-if-changed .
           flutter analyze
           flutter test test/ai_service_test.dart test/chat_screen_widget_test.dart test/announcement_usecases_test.dart test/auth_usecases_test.dart test/auth_push_test.dart test/formatters_test.dart
+
+      - name: Verify Week 11 Performance Optimization (11-week-11-performance-optimization)
+        working-directory: ./11-week-11-performance-optimization
+        run: |
+          flutter pub get
+          dart format --set-exit-if-changed .
+          flutter analyze
+          flutter test test/performance_optimization_test.dart test/ai_service_test.dart test/chat_screen_widget_test.dart test/announcement_usecases_test.dart test/auth_usecases_test.dart test/auth_push_test.dart test/formatters_test.dart
+

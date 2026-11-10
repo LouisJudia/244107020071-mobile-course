@@ -21,6 +21,7 @@
 | **08** | Mid Project Review & Peer Code Review | [`08-week-8-mid-project-review`](08-week-8-mid-project-review/) | ✅ Selesai |
 | **09** | AI-Assisted Development / Vibe Coding (Search & Clean Architecture) | [`09-week-9-ai-assisted-development`](09-week-9-ai-assisted-development/) | ✅ Selesai |
 | **10** | AI Feature Integration (SobatKampus AI, Gemini API, Privacy & Fallback) | [`10-week-10-ai-feature-integration`](10-week-10-ai-feature-integration/) | ✅ Selesai |
+| **11** | Performance Optimization (Flame Chart, RepaintBoundary, SWR Cache, Downsampling) | [`11-week-11-performance-optimization`](11-week-11-performance-optimization/) | ✅ Selesai |
 
 ---
 
