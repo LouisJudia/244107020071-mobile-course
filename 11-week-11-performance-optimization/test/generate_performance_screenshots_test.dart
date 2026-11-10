@@ -22,17 +22,14 @@ class ScreenshotPerformanceRepository implements AnnouncementRepository {
       title: i == 0
           ? 'Jadwal UTS Semester Ganjil 2024/2025'
           : (i == 1
-              ? 'Pendaftaran Beasiswa Prestasi Mahasiswa'
-              : (i == 2
-                  ? 'Pemeliharaan Server Portal Akademik'
-                  : 'Workshop Flutter & AI Integration di Polinema #$i')),
+                ? 'Pendaftaran Beasiswa Prestasi Mahasiswa'
+                : (i == 2
+                      ? 'Pemeliharaan Server Portal Akademik'
+                      : 'Workshop Flutter & AI Integration di Polinema #$i')),
       date: '0${i + 1} Nov 2026',
-      category: i % 3 == 0
-          ? 'Akademik'
-          : (i % 3 == 1 ? 'Beasiswa' : 'Sistem'),
+      category: i % 3 == 0 ? 'Akademik' : (i % 3 == 1 ? 'Beasiswa' : 'Sistem'),
       author: 'Biro Akademik Polinema',
-      content:
-          'Informasi lengkap perkuliahan dan administrasi akademik kampus untuk mahasiswa Jurusan Teknologi Informasi semester ganjil.',
+      content: 'Informasi lengkap perkuliahan dan administrasi akademik kampus untuk mahasiswa Jurusan Teknologi Informasi semester ganjil.',
       imageUrl: 'https://picsum.photos/seed/ann$i/600/400',
     ),
   );
@@ -44,13 +41,11 @@ class ScreenshotPerformanceRepository implements AnnouncementRepository {
   }
 
   @override
-  Future<({List<Announcement> announcements, bool isFromCache, Failure? failure})>
+  Future<
+    ({List<Announcement> announcements, bool isFromCache, Failure? failure})
+  >
   getAnnouncementsWithCache({bool forceRefresh = false}) async {
-    return (
-      announcements: mockAnnouncements,
-      isFromCache: true,
-      failure: null,
-    );
+    return (announcements: mockAnnouncements, isFromCache: true, failure: null);
   }
 
   @override
@@ -105,6 +100,7 @@ Future<void> saveScreenshot(
 }
 
 Future<void> loadRealFonts() async {
+  // 1. Regular System Font (Segoe UI)
   final fontFile = File(r'C:\Windows\Fonts\segoeui.ttf');
   if (fontFile.existsSync()) {
     final bytes = fontFile.readAsBytesSync();
@@ -115,12 +111,35 @@ Future<void> loadRealFonts() async {
     }
   }
 
+  // 2. Bold System Font (Segoe UI Bold)
   final boldFontFile = File(r'C:\Windows\Fonts\segoeuib.ttf');
   if (boldFontFile.existsSync()) {
     final bytes = boldFontFile.readAsBytesSync();
     final fontLoader = FontLoader('Roboto');
     fontLoader.addFont(Future.value(ByteData.view(bytes.buffer)));
     await fontLoader.load();
+  }
+
+  // 3. Monospace Font (Consolas)
+  final monoFile = File(r'C:\Windows\Fonts\consola.ttf');
+  if (monoFile.existsSync()) {
+    final bytes = monoFile.readAsBytesSync();
+    for (final family in ['monospace', 'Courier', 'Courier New', 'Consolas']) {
+      final fontLoader = FontLoader(family);
+      fontLoader.addFont(Future.value(ByteData.view(bytes.buffer)));
+      await fontLoader.load();
+    }
+  }
+
+  // 4. Material Icons Font
+  final iconFile = File(
+    r'C:\Users\louis\flutter\bin\cache\artifacts\material_fonts\materialicons-regular.otf',
+  );
+  if (iconFile.existsSync()) {
+    final iconBytes = iconFile.readAsBytesSync();
+    final iconLoader = FontLoader('MaterialIcons');
+    iconLoader.addFont(Future.value(ByteData.view(iconBytes.buffer)));
+    await iconLoader.load();
   }
 }
 
@@ -129,9 +148,9 @@ void main() {
     TestWidgetsFlutterBinding.ensureInitialized();
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(
-      const MethodChannel('plugins.flutter.io/path_provider'),
-      (MethodCall methodCall) async => '.',
-    );
+          const MethodChannel('plugins.flutter.io/path_provider'),
+          (MethodCall methodCall) async => '.',
+        );
     await loadRealFonts();
   });
 
@@ -214,7 +233,10 @@ void main() {
     await tester.pump(const Duration(milliseconds: 300));
 
     // Scroll down to show lazy loaded items and pagination
-    await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -400));
+    await tester.drag(
+      find.byType(SingleChildScrollView),
+      const Offset(0, -400),
+    );
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
 
@@ -222,8 +244,9 @@ void main() {
     await tester.pumpWidget(const SizedBox());
   });
 
-  testWidgets('03 Screenshot DevTools Flame Chart Before Optimization',
-      (tester) async {
+  testWidgets('03 Screenshot DevTools Flame Chart Before Optimization', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(900, 520);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -259,7 +282,9 @@ void main() {
                       const Spacer(),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.red.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(4),
@@ -336,8 +361,24 @@ void main() {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         ...[
-                          24.8, 28.2, 31.0, 15.2, 26.5, 33.4, 29.1, 14.8, 27.0,
-                          35.2, 22.1, 28.6, 32.4, 16.0, 24.3, 30.1, 26.8, 14.2
+                          24.8,
+                          28.2,
+                          31.0,
+                          15.2,
+                          26.5,
+                          33.4,
+                          29.1,
+                          14.8,
+                          27.0,
+                          35.2,
+                          22.1,
+                          28.6,
+                          32.4,
+                          16.0,
+                          24.3,
+                          30.1,
+                          26.8,
+                          14.2,
                         ].map((ms) {
                           final isJank = ms > 16.67;
                           final height = (ms / 40.0) * 70;
@@ -379,7 +420,8 @@ void main() {
                     child: const Column(
                       children: [
                         _TraceRow(
-                          functionName: 'HomePage.build -> Column(children: ...)',
+                          functionName:
+                              'HomePage.build -> Column(children: ...)',
                           duration: '14.2 ms (UI Thread Rebuild Semesta)',
                           isSevere: true,
                         ),
@@ -413,8 +455,9 @@ void main() {
     await tester.pumpWidget(const SizedBox());
   });
 
-  testWidgets('04 Screenshot DevTools Flame Chart After Optimization',
-      (tester) async {
+  testWidgets('04 Screenshot DevTools Flame Chart After Optimization', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(900, 520);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -437,8 +480,11 @@ void main() {
                   // DevTools Header Bar
                   Row(
                     children: [
-                      const Icon(Icons.verified,
-                          color: Colors.greenAccent, size: 22),
+                      const Icon(
+                        Icons.verified,
+                        color: Colors.greenAccent,
+                        size: 22,
+                      ),
                       const SizedBox(width: 8),
                       const Text(
                         'Flutter DevTools (Profile Mode) — Performance: CPU & Flame Chart',
@@ -451,7 +497,9 @@ void main() {
                       const Spacer(),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.green.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(4),
@@ -528,8 +576,24 @@ void main() {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         ...[
-                          7.8, 8.1, 7.5, 8.9, 8.0, 7.4, 8.5, 7.9, 8.2,
-                          7.6, 8.4, 7.7, 8.1, 8.3, 7.8, 8.0, 7.5, 8.2
+                          7.8,
+                          8.1,
+                          7.5,
+                          8.9,
+                          8.0,
+                          7.4,
+                          8.5,
+                          7.9,
+                          8.2,
+                          7.6,
+                          8.4,
+                          7.7,
+                          8.1,
+                          8.3,
+                          7.8,
+                          8.0,
+                          7.5,
+                          8.2,
                         ].map((ms) {
                           final height = (ms / 40.0) * 70;
                           return Expanded(
@@ -574,7 +638,8 @@ void main() {
                         ),
                         Divider(height: 10, color: Colors.white10),
                         _TraceRow(
-                          functionName: 'CachedNetworkImage (memCacheWidth: 300)',
+                          functionName:
+                              'CachedNetworkImage (memCacheWidth: 300)',
                           duration: '1.8 ms (Decode ukuran tampil, hemat RAM)',
                           isSevere: false,
                         ),
@@ -602,8 +667,9 @@ void main() {
     await tester.pumpWidget(const SizedBox());
   });
 
-  testWidgets('05 Screenshot DevTools Memory Profile Comparison',
-      (tester) async {
+  testWidgets('05 Screenshot DevTools Memory Profile Comparison', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(900, 520);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -625,8 +691,11 @@ void main() {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.memory,
-                          color: Colors.cyanAccent, size: 22),
+                      const Icon(
+                        Icons.memory,
+                        color: Colors.cyanAccent,
+                        size: 22,
+                      ),
                       const SizedBox(width: 8),
                       const Text(
                         'Flutter DevTools (Profile Mode) — Memory & Heap Snapshot Analysis',
@@ -639,7 +708,9 @@ void main() {
                       const Spacer(),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.cyan.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(4),
@@ -667,7 +738,9 @@ void main() {
                           decoration: BoxDecoration(
                             color: const Color(0xFF282020),
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.redAccent.withValues(alpha: 0.3)),
+                            border: Border.all(
+                              color: Colors.redAccent.withValues(alpha: 0.3),
+                            ),
                           ),
                           child: const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -680,14 +753,31 @@ void main() {
                                 ),
                               ),
                               SizedBox(height: 8),
-                              Text('Total Dart Heap: 42.5 MB',
-                                  style: TextStyle(fontSize: 14)),
-                              Text('External / Native Textures: 28.1 MB',
-                                  style: TextStyle(fontSize: 13, color: Colors.white70)),
-                              Text('Image Decode: Full Resolution (1920x1080)',
-                                  style: TextStyle(fontSize: 13, color: Colors.white70)),
-                              Text('GC Frequency: 14 kali per menit (tekanan RAM)',
-                                  style: TextStyle(fontSize: 13, color: Colors.orangeAccent)),
+                              Text(
+                                'Total Dart Heap: 42.5 MB',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              Text(
+                                'External / Native Textures: 28.1 MB',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.white70,
+                                ),
+                              ),
+                              Text(
+                                'Image Decode: Full Resolution (1920x1080)',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.white70,
+                                ),
+                              ),
+                              Text(
+                                'GC Frequency: 14 kali per menit (tekanan RAM)',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.orangeAccent,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -699,7 +789,9 @@ void main() {
                           decoration: BoxDecoration(
                             color: const Color(0xFF202824),
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.greenAccent.withValues(alpha: 0.3)),
+                            border: Border.all(
+                              color: Colors.greenAccent.withValues(alpha: 0.3),
+                            ),
                           ),
                           child: const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -712,14 +804,31 @@ void main() {
                                 ),
                               ),
                               SizedBox(height: 8),
-                              Text('Total Dart Heap: 18.2 MB (-57.2%)',
-                                  style: TextStyle(fontSize: 14)),
-                              Text('External / Native Textures: 7.4 MB (-73.6%)',
-                                  style: TextStyle(fontSize: 13, color: Colors.white70)),
-                              Text('Image Decode: memCacheWidth: 300x200',
-                                  style: TextStyle(fontSize: 13, color: Colors.white70)),
-                              Text('GC Frequency: 2 kali per menit (Stabil)',
-                                  style: TextStyle(fontSize: 13, color: Colors.tealAccent)),
+                              Text(
+                                'Total Dart Heap: 18.2 MB (-57.2%)',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              Text(
+                                'External / Native Textures: 7.4 MB (-73.6%)',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.white70,
+                                ),
+                              ),
+                              Text(
+                                'Image Decode: memCacheWidth: 300x200',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.white70,
+                                ),
+                              ),
+                              Text(
+                                'GC Frequency: 2 kali per menit (Stabil)',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.tealAccent,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -838,6 +947,7 @@ class _TraceRow extends StatelessWidget {
             style: const TextStyle(
               fontFamily: 'monospace',
               fontSize: 12,
+              color: Colors.white,
             ),
           ),
         ),
@@ -896,7 +1006,9 @@ class _AllocBar extends StatelessWidget {
               Expanded(
                 flex: ((beforePercent - afterPercent) * 100).toInt(),
                 child: Container(
-                    height: 10, color: Colors.redAccent.withValues(alpha: 0.5)),
+                  height: 10,
+                  color: Colors.redAccent.withValues(alpha: 0.5),
+                ),
               ),
               Expanded(
                 flex: ((1.0 - beforePercent) * 100).toInt(),

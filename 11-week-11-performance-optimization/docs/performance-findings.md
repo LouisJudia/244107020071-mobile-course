@@ -75,3 +75,4 @@ Profiling baseline dilakukan dengan prosedur baku:
 ## 5. Kesimpulan Profiling Baseline
 
 Kondisi baseline membuktikan bahwa penambahan fitur-fitur modern (seperti AI, push notifications, dan media kaya) tanpa rekayasa performa yang cermat langsung menimbulkan *degradasi pengalaman pengguna (UX)* berupa lag visual, konsumsi memori berlebih, dan ketergantungan jaringan yang rapuh. Langkah-langkah optimasi terstruktur pada Minggu 11 difokuskan untuk menyelesaikan akar masalah tersebut secara komprehensif.
+
