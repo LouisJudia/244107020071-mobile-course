@@ -1,0 +1,12 @@
+import '../../../../core/errors/failures.dart';
+import '../repositories/auth_repository.dart';
+
+/// Use case untuk operasi logout
+class LogoutUseCase {
+  const LogoutUseCase(this._repository);
+  final AuthRepository _repository;
+
+  Future<({bool success, Failure? failure})> call() {
+    return _repository.logout();
+  }
+}
