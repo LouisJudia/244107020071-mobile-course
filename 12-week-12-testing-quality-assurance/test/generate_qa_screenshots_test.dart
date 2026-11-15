@@ -52,12 +52,7 @@ Future<void> loadRealFonts() async {
   final monoFile = File(r'C:\Windows\Fonts\consola.ttf');
   if (monoFile.existsSync()) {
     final bytes = monoFile.readAsBytesSync();
-    for (final family in [
-      'monospace',
-      'Courier',
-      'Courier New',
-      'Consolas',
-    ]) {
+    for (final family in ['monospace', 'Courier', 'Courier New', 'Consolas']) {
       final fontLoader = FontLoader(family);
       fontLoader.addFont(Future.value(ByteData.view(bytes.buffer)));
       await fontLoader.load();
@@ -80,14 +75,15 @@ void main() {
     TestWidgetsFlutterBinding.ensureInitialized();
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(
-      const MethodChannel('plugins.flutter.io/path_provider'),
-      (MethodCall methodCall) async => '.',
-    );
+          const MethodChannel('plugins.flutter.io/path_provider'),
+          (MethodCall methodCall) async => '.',
+        );
     await loadRealFonts();
   });
 
-  testWidgets('01 Screenshot Unit and Edge Case Terminal Report',
-      (tester) async {
+  testWidgets('01 Screenshot Unit and Edge Case Terminal Report', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(960, 540);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -110,7 +106,11 @@ void main() {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.terminal, color: Colors.greenAccent, size: 24),
+                      const Icon(
+                        Icons.terminal,
+                        color: Colors.greenAccent,
+                        size: 24,
+                      ),
                       const SizedBox(width: 10),
                       const Text(
                         'Terminal: flutter test --reporter expanded',
@@ -123,7 +123,10 @@ void main() {
                       ),
                       const Spacer(),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.green.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(6),
@@ -155,38 +158,167 @@ void main() {
                           children: [
                             Text(
                               '00:01 +12: Unit Tests: Validasi Logika & Kasus Tepi (Edge Cases) [PASS]',
-                              style: TextStyle(color: Colors.greenAccent, fontFamily: 'monospace', fontSize: 13),
+                              style: TextStyle(
+                                color: Colors.greenAccent,
+                                fontFamily: 'monospace',
+                                fontSize: 13,
+                              ),
                             ),
-                            Text('  + Kasus Normal: Judul tugas atau input teks valid diterima', style: TextStyle(color: Colors.white70, fontFamily: 'monospace', fontSize: 12)),
-                            Text('  + Kasus Tepi: Menolak string kosong, spasi berlebih, atau whitespace murni', style: TextStyle(color: Colors.white70, fontFamily: 'monospace', fontSize: 12)),
-                            Text('  + Kasus Tepi: Validasi format email kampus (@polinema.ac.id)', style: TextStyle(color: Colors.white70, fontFamily: 'monospace', fontSize: 12)),
-                            Text('  + Kasus Tepi: Validasi panjang password minimal 6 karakter', style: TextStyle(color: Colors.white70, fontFamily: 'monospace', fontSize: 12)),
-                            Text('  + Kasus Normal: maskToken memotong token panjang dengan rapi', style: TextStyle(color: Colors.white70, fontFamily: 'monospace', fontSize: 12)),
-                            Text('  + Kasus Tepi: Redaksi data sensitif NIK 16 digit dan nomor HP Indonesia', style: TextStyle(color: Colors.white70, fontFamily: 'monospace', fontSize: 12)),
-                            Text('  + Kasus Kegagalan: Batas kuota harian (Cost Control) terlampaui', style: TextStyle(color: Colors.white70, fontFamily: 'monospace', fontSize: 12)),
+                            Text(
+                              '  + Kasus Normal: Judul tugas atau input teks valid diterima',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontFamily: 'monospace',
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(
+                              '  + Kasus Tepi: Menolak string kosong, spasi berlebih, atau whitespace murni',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontFamily: 'monospace',
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(
+                              '  + Kasus Tepi: Validasi format email kampus (@polinema.ac.id)',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontFamily: 'monospace',
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(
+                              '  + Kasus Tepi: Validasi panjang password minimal 6 karakter',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontFamily: 'monospace',
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(
+                              '  + Kasus Normal: maskToken memotong token panjang dengan rapi',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontFamily: 'monospace',
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(
+                              '  + Kasus Tepi: Redaksi data sensitif NIK 16 digit dan nomor HP Indonesia',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontFamily: 'monospace',
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(
+                              '  + Kasus Kegagalan: Batas kuota harian (Cost Control) terlampaui',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontFamily: 'monospace',
+                                fontSize: 12,
+                              ),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               '00:03 +28: Fake Repository & Dependency Isolation Tests [PASS]',
-                              style: TextStyle(color: Colors.greenAccent, fontFamily: 'monospace', fontSize: 13),
+                              style: TextStyle(
+                                color: Colors.greenAccent,
+                                fontFamily: 'monospace',
+                                fontSize: 13,
+                              ),
                             ),
-                            Text('  + Arrange-Act-Assert: Berhasil mengambil data tanpa API sungguhan', style: TextStyle(color: Colors.white70, fontFamily: 'monospace', fontSize: 12)),
-                            Text('  + Kasus Kegagalan: Server 500 mengembalikan ServerFailure tanpa crash', style: TextStyle(color: Colors.white70, fontFamily: 'monospace', fontSize: 12)),
-                            Text('  + Kasus Kegagalan: Jaringan terputus menghasilkan NetworkFailure', style: TextStyle(color: Colors.white70, fontFamily: 'monospace', fontSize: 12)),
-                            Text('  + Kasus Tepi: Dataset kosong mengembalikan list kosong dengan sukses', style: TextStyle(color: Colors.white70, fontFamily: 'monospace', fontSize: 12)),
-                            Text('  + Asinkron & Cache: SWR mengembalikan data lokal saat remote gagal', style: TextStyle(color: Colors.white70, fontFamily: 'monospace', fontSize: 12)),
+                            Text(
+                              '  + Arrange-Act-Assert: Berhasil mengambil data tanpa API sungguhan',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontFamily: 'monospace',
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(
+                              '  + Kasus Kegagalan: Server 500 mengembalikan ServerFailure tanpa crash',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontFamily: 'monospace',
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(
+                              '  + Kasus Kegagalan: Jaringan terputus menghasilkan NetworkFailure',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontFamily: 'monospace',
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(
+                              '  + Kasus Tepi: Dataset kosong mengembalikan list kosong dengan sukses',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontFamily: 'monospace',
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(
+                              '  + Asinkron & Cache: SWR mengembalikan data lokal saat remote gagal',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontFamily: 'monospace',
+                                fontSize: 12,
+                              ),
+                            ),
                             SizedBox(height: 10),
                             Text(
                               '00:06 +45: Widget Tests: Tampilan & Interaksi UI [PASS]',
-                              style: TextStyle(color: Colors.greenAccent, fontFamily: 'monospace', fontSize: 13),
+                              style: TextStyle(
+                                color: Colors.greenAccent,
+                                fontFamily: 'monospace',
+                                fontSize: 13,
+                              ),
                             ),
-                            Text('  + Tampilan Awal LoginPage merender form email, password, button', style: TextStyle(color: Colors.white70, fontFamily: 'monospace', fontSize: 12)),
-                            Text('  + Form validation error saat field disubmit kosong', style: TextStyle(color: Colors.white70, fontFamily: 'monospace', fontSize: 12)),
-                            Text('  + Password visibility toggle mengubah status obscureText', style: TextStyle(color: Colors.white70, fontFamily: 'monospace', fontSize: 12)),
-                            Text('  + Banner pesan error saat autentikasi gagal', style: TextStyle(color: Colors.white70, fontFamily: 'monospace', fontSize: 12)),
+                            Text(
+                              '  + Tampilan Awal LoginPage merender form email, password, button',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontFamily: 'monospace',
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(
+                              '  + Form validation error saat field disubmit kosong',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontFamily: 'monospace',
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(
+                              '  + Password visibility toggle mengubah status obscureText',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontFamily: 'monospace',
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(
+                              '  + Banner pesan error saat autentikasi gagal',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontFamily: 'monospace',
+                                fontSize: 12,
+                              ),
+                            ),
                             SizedBox(height: 12),
                             Text(
                               '00:11 +88: All tests passed!',
-                              style: TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold, fontFamily: 'monospace', fontSize: 14),
+                              style: TextStyle(
+                                color: Colors.greenAccent,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'monospace',
+                                fontSize: 14,
+                              ),
                             ),
                           ],
                         ),
@@ -218,14 +350,13 @@ void main() {
         key: key,
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            useMaterial3: true,
-            colorSchemeSeed: Colors.indigo,
-          ),
+          theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.indigo),
           home: Scaffold(
             backgroundColor: const Color(0xFFF5F7FA),
             appBar: AppBar(
-              title: const Text('Widget Testing: Form Validation & Error State'),
+              title: const Text(
+                'Widget Testing: Form Validation & Error State',
+              ),
               backgroundColor: Colors.white,
               elevation: 1,
             ),
@@ -234,7 +365,9 @@ void main() {
                 width: 440,
                 child: Card(
                   elevation: 4,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(24.0),
                     child: Column(
@@ -243,11 +376,18 @@ void main() {
                       children: [
                         const Row(
                           children: [
-                            Icon(Icons.fact_check, color: Colors.indigo, size: 28),
+                            Icon(
+                              Icons.fact_check,
+                              color: Colors.indigo,
+                              size: 28,
+                            ),
                             SizedBox(width: 10),
                             Text(
                               'Form Validation Test Suite',
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ],
                         ),
@@ -266,7 +406,11 @@ void main() {
                               Expanded(
                                 child: Text(
                                   'Email atau password salah (Error State Handled)',
-                                  style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600, fontSize: 13),
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 13,
+                                  ),
                                 ),
                               ),
                             ],
@@ -279,7 +423,9 @@ void main() {
                             labelText: 'Email Kampus',
                             errorText: 'Format email tidak valid',
                             prefixIcon: const Icon(Icons.email_outlined),
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                           ),
                         ),
                         const SizedBox(height: 12),
@@ -290,8 +436,12 @@ void main() {
                             labelText: 'Kata Sandi',
                             errorText: 'Kata sandi minimal 6 karakter',
                             prefixIcon: const Icon(Icons.lock_outline),
-                            suffixIcon: const Icon(Icons.visibility_off_outlined),
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                            suffixIcon: const Icon(
+                              Icons.visibility_off_outlined,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -299,7 +449,9 @@ void main() {
                           onPressed: () {},
                           style: FilledButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                           ),
                           child: const Text('Masuk (Validated on Tap)'),
                         ),
@@ -319,7 +471,9 @@ void main() {
     await tester.pumpWidget(const SizedBox());
   });
 
-  testWidgets('03 Screenshot Fake Repository Dependency Matrix', (tester) async {
+  testWidgets('03 Screenshot Fake Repository Dependency Matrix', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(960, 540);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -346,7 +500,11 @@ void main() {
                       SizedBox(width: 10),
                       Text(
                         'Dependency Isolation: Real API vs Fake Repository',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ],
                   ),
@@ -360,24 +518,66 @@ void main() {
                             decoration: BoxDecoration(
                               color: const Color(0xFF262626),
                               borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: Colors.redAccent.withValues(alpha: 0.3)),
+                              border: Border.all(
+                                color: Colors.redAccent.withValues(alpha: 0.3),
+                              ),
                             ),
                             child: const Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   children: [
-                                    Icon(Icons.cloud_off, color: Colors.redAccent, size: 20),
+                                    Icon(
+                                      Icons.cloud_off,
+                                      color: Colors.redAccent,
+                                      size: 20,
+                                    ),
                                     SizedBox(width: 8),
-                                    Text('Real API (Uncontrolled)', style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
+                                    Text(
+                                      'Real API (Uncontrolled)',
+                                      style: TextStyle(
+                                        color: Colors.redAccent,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ],
                                 ),
                                 SizedBox(height: 12),
-                                Text('• Membutuhkan koneksi internet aktif', style: TextStyle(color: Colors.white70, fontSize: 13)),
-                                Text('• Bergantung pada server & autentikasi luar', style: TextStyle(color: Colors.white70, fontSize: 13)),
-                                Text('• Eksekusi lambat (network latency 200-500ms)', style: TextStyle(color: Colors.white70, fontSize: 13)),
-                                Text('• Sulit mereproduksi error 500 / timeout', style: TextStyle(color: Colors.white70, fontSize: 13)),
-                                Text('• Data dinamis menyebabkan tes flaky', style: TextStyle(color: Colors.white70, fontSize: 13)),
+                                Text(
+                                  '• Membutuhkan koneksi internet aktif',
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                Text(
+                                  '• Bergantung pada server & autentikasi luar',
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                Text(
+                                  '• Eksekusi lambat (network latency 200-500ms)',
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                Text(
+                                  '• Sulit mereproduksi error 500 / timeout',
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                Text(
+                                  '• Data dinamis menyebabkan tes flaky',
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 13,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -389,24 +589,68 @@ void main() {
                             decoration: BoxDecoration(
                               color: const Color(0xFF262626),
                               borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: Colors.greenAccent.withValues(alpha: 0.4)),
+                              border: Border.all(
+                                color: Colors.greenAccent.withValues(
+                                  alpha: 0.4,
+                                ),
+                              ),
                             ),
                             child: const Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   children: [
-                                    Icon(Icons.shield_outlined, color: Colors.greenAccent, size: 20),
+                                    Icon(
+                                      Icons.shield_outlined,
+                                      color: Colors.greenAccent,
+                                      size: 20,
+                                    ),
                                     SizedBox(width: 8),
-                                    Text('Fake Repository (In-Memory)', style: TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold)),
+                                    Text(
+                                      'Fake Repository (In-Memory)',
+                                      style: TextStyle(
+                                        color: Colors.greenAccent,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ],
                                 ),
                                 SizedBox(height: 12),
-                                Text('• 100% Offline, deterministik & konsisten', style: TextStyle(color: Colors.white70, fontSize: 13)),
-                                Text('• Kontrak abstraksi (Clean Architecture)', style: TextStyle(color: Colors.white70, fontSize: 13)),
-                                Text('• Eksekusi instan (< 1ms per unit test)', style: TextStyle(color: Colors.white70, fontSize: 13)),
-                                Text('• Mudah switch state: sukses, 500, timeout', style: TextStyle(color: Colors.white70, fontSize: 13)),
-                                Text('• Mengisolasi dependensi eksternal tanpa mock library', style: TextStyle(color: Colors.white70, fontSize: 13)),
+                                Text(
+                                  '• 100% Offline, deterministik & konsisten',
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                Text(
+                                  '• Kontrak abstraksi (Clean Architecture)',
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                Text(
+                                  '• Eksekusi instan (< 1ms per unit test)',
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                Text(
+                                  '• Mudah switch state: sukses, 500, timeout',
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                Text(
+                                  '• Mengisolasi dependensi eksternal tanpa mock library',
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 13,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -450,15 +694,26 @@ void main() {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.analytics, color: Colors.purpleAccent, size: 24),
+                      const Icon(
+                        Icons.analytics,
+                        color: Colors.purpleAccent,
+                        size: 24,
+                      ),
                       const SizedBox(width: 10),
                       const Text(
                         'Code Coverage Report (flutter test --coverage)',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                       const Spacer(),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.purple.withValues(alpha: 0.25),
                           borderRadius: BorderRadius.circular(6),
@@ -466,7 +721,11 @@ void main() {
                         ),
                         child: const Text(
                           'TOTAL: 71.7% (960 / 1339 LINES)',
-                          style: TextStyle(color: Colors.purpleAccent, fontWeight: FontWeight.bold, fontSize: 13),
+                          style: TextStyle(
+                            color: Colors.purpleAccent,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ],
@@ -481,17 +740,47 @@ void main() {
                     ),
                     child: const Column(
                       children: [
-                        _CoverageRow(filename: 'login_page.dart', hit: 84, total: 87, percent: 96.6),
+                        _CoverageRow(
+                          filename: 'login_page.dart',
+                          hit: 84,
+                          total: 87,
+                          percent: 96.6,
+                        ),
                         Divider(height: 14, color: Colors.white10),
-                        _CoverageRow(filename: 'ai_service.dart', hit: 63, total: 68, percent: 92.6),
+                        _CoverageRow(
+                          filename: 'ai_service.dart',
+                          hit: 63,
+                          total: 68,
+                          percent: 92.6,
+                        ),
                         Divider(height: 14, color: Colors.white10),
-                        _CoverageRow(filename: 'announcement_providers.dart', hit: 46, total: 51, percent: 90.2),
+                        _CoverageRow(
+                          filename: 'announcement_providers.dart',
+                          hit: 46,
+                          total: 51,
+                          percent: 90.2,
+                        ),
                         Divider(height: 14, color: Colors.white10),
-                        _CoverageRow(filename: 'home_page.dart', hit: 164, total: 187, percent: 87.7),
+                        _CoverageRow(
+                          filename: 'home_page.dart',
+                          hit: 164,
+                          total: 187,
+                          percent: 87.7,
+                        ),
                         Divider(height: 14, color: Colors.white10),
-                        _CoverageRow(filename: 'announcement_tile.dart', hit: 61, total: 71, percent: 85.9),
+                        _CoverageRow(
+                          filename: 'announcement_tile.dart',
+                          hit: 61,
+                          total: 71,
+                          percent: 85.9,
+                        ),
                         Divider(height: 14, color: Colors.white10),
-                        _CoverageRow(filename: 'chat_screen.dart', hit: 89, total: 109, percent: 81.7),
+                        _CoverageRow(
+                          filename: 'chat_screen.dart',
+                          hit: 89,
+                          total: 109,
+                          percent: 81.7,
+                        ),
                       ],
                     ),
                   ),
@@ -535,7 +824,11 @@ void main() {
                       SizedBox(width: 10),
                       Text(
                         'Integration Test: End-to-End User Journey Flow',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ],
                   ),
@@ -612,7 +905,11 @@ class _CoverageRow extends StatelessWidget {
           width: 220,
           child: Text(
             filename,
-            style: const TextStyle(fontFamily: 'monospace', fontSize: 13, color: Colors.white),
+            style: const TextStyle(
+              fontFamily: 'monospace',
+              fontSize: 13,
+              color: Colors.white,
+            ),
           ),
         ),
         Expanded(
@@ -674,7 +971,11 @@ class _StepCard extends StatelessWidget {
                   backgroundColor: color.withValues(alpha: 0.2),
                   child: Text(
                     stepNumber,
-                    style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 12),
+                    style: TextStyle(
+                      color: color,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
                   ),
                 ),
                 const Spacer(),
@@ -684,12 +985,20 @@ class _StepCard extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               title,
-              style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 14),
+              style: TextStyle(
+                color: color,
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
             ),
             const SizedBox(height: 8),
             Text(
               desc,
-              style: const TextStyle(color: Colors.white70, fontSize: 12, height: 1.4),
+              style: const TextStyle(
+                color: Colors.white70,
+                fontSize: 12,
+                height: 1.4,
+              ),
             ),
           ],
         ),

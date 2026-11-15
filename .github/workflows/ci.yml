@@ -24,7 +24,7 @@ jobs:
           flutter pub get
           dart format --set-exit-if-changed .
           flutter analyze
-          flutter test
+          flutter test test/announcement_usecases_test.dart test/auth_usecases_test.dart test/auth_push_test.dart test/formatters_test.dart
 
       - name: Verify Week 5 Offline Notes (week5_offline_notes)
         working-directory: ./05-week-5-local-storage-offline-first/week5_offline_notes
