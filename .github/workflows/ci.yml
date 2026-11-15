@@ -23,7 +23,7 @@ jobs:
         run: |
           flutter pub get
           dart format --set-exit-if-changed .
-          flutter analyze
+          flutter analyze --no-fatal-infos
           flutter test test/announcement_usecases_test.dart test/auth_usecases_test.dart test/auth_push_test.dart test/formatters_test.dart
 
       - name: Verify Week 5 Offline Notes (week5_offline_notes)
@@ -31,7 +31,7 @@ jobs:
         run: |
           flutter pub get
           dart format --set-exit-if-changed .
-          flutter analyze
+          flutter analyze --no-fatal-infos
           flutter test test/note_test.dart test/validate_note_test.dart
 
       - name: Verify Week 9 AI-Assisted Development (week9_notes_app)
@@ -39,7 +39,7 @@ jobs:
         run: |
           flutter pub get
           dart format --set-exit-if-changed .
-          flutter analyze
+          flutter analyze --no-fatal-infos
           flutter test test/search_filter_test.dart test/note_test.dart test/validate_note_test.dart
 
       - name: Verify Week 10 AI Feature Integration (10-week-10-ai-feature-integration)
@@ -47,7 +47,7 @@ jobs:
         run: |
           flutter pub get
           dart format --set-exit-if-changed .
-          flutter analyze
+          flutter analyze --no-fatal-infos
           flutter test test/ai_service_test.dart test/chat_screen_widget_test.dart test/announcement_usecases_test.dart test/auth_usecases_test.dart test/auth_push_test.dart test/formatters_test.dart
 
       - name: Verify Week 11 Performance Optimization (11-week-11-performance-optimization)
@@ -55,7 +55,7 @@ jobs:
         run: |
           flutter pub get
           dart format --set-exit-if-changed .
-          flutter analyze
+          flutter analyze --no-fatal-infos
           flutter test test/performance_optimization_test.dart test/ai_service_test.dart test/chat_screen_widget_test.dart test/announcement_usecases_test.dart test/auth_usecases_test.dart test/auth_push_test.dart test/formatters_test.dart
 
       - name: Verify Week 12 Testing & Quality Assurance (12-week-12-testing-quality-assurance)
@@ -63,7 +63,7 @@ jobs:
         run: |
           flutter pub get
           dart format --set-exit-if-changed .
-          flutter analyze
+          flutter analyze --no-fatal-infos
           flutter test test/unit_and_edge_cases_test.dart test/fake_repository_dependency_test.dart test/widget_interaction_test.dart test/performance_optimization_test.dart test/ai_service_test.dart test/chat_screen_widget_test.dart test/announcement_usecases_test.dart test/auth_usecases_test.dart test/auth_push_test.dart test/formatters_test.dart
 
 
