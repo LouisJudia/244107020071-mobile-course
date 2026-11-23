@@ -66,4 +66,13 @@ jobs:
           flutter analyze --no-fatal-infos
           flutter test test/unit_and_edge_cases_test.dart test/fake_repository_dependency_test.dart test/widget_interaction_test.dart test/performance_optimization_test.dart test/ai_service_test.dart test/chat_screen_widget_test.dart test/announcement_usecases_test.dart test/auth_usecases_test.dart test/auth_push_test.dart test/formatters_test.dart
 
+      - name: Verify Week 13 CI/CD Automation (13-week-13-ci-cd-automation)
+        working-directory: ./13-week-13-ci-cd-automation
+        run: |
+          flutter pub get
+          dart format --set-exit-if-changed .
+          flutter analyze --no-fatal-infos
+          flutter test
+
+
 

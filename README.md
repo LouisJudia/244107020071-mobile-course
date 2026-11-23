@@ -23,6 +23,7 @@
 | **10** | AI Feature Integration (SobatKampus AI, Gemini API, Privacy & Fallback) | [`10-week-10-ai-feature-integration`](10-week-10-ai-feature-integration/) | ✅ Selesai |
 | **11** | Performance Optimization (Flame Chart, RepaintBoundary, SWR Cache, Downsampling) | [`11-week-11-performance-optimization`](11-week-11-performance-optimization/) | ✅ Selesai |
 | **12** | Testing & Quality Assurance (Unit, Widget, Integration Tests, Fake Repos, Code Coverage) | [`12-week-12-testing-quality-assurance`](12-week-12-testing-quality-assurance/) | ✅ Selesai |
+| **13** | CI/CD & Automation (GitHub Actions, APK & AAB Builds, SemVer & Artifacts) | [`13-week-13-ci-cd-automation`](13-week-13-ci-cd-automation/) | ✅ Selesai |
 
 ---
 
